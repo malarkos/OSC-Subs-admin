@@ -14,6 +14,10 @@ JHtml::_ ( 'formbehavior.chosen', 'select' );
 $listOrder = $this->escape ( $this->filter_order );
 $listDirn = $this->escape ( $this->filter_order_Dir );
 ?>
+<div id="j-sidebar-container" class="span2">
+    <?php echo $this->sidebar; ?>
+</div>
+<div id="j-main-container" class="span10">
 <form action="index.php?option=com_subs&view=subs" method="post"
 	id="adminForm" name="adminForm">
 
@@ -113,3 +117,4 @@ foreach ( $this->items as $i => $row ) :
 		type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
 	<?php echo JHtml::_('form.token'); ?>
 </form>
+</div>

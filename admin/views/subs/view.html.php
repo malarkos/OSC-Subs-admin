@@ -46,6 +46,13 @@ class SubsViewSubs extends JViewLegacy
 			return false;
 		}
 		
+		require_once JPATH_COMPONENT . '/helpers/subs.php';
+		
+		SubsHelper::addSubmenu("subs");
+		
+		
+		$this->sidebar = JHtmlSidebar::render();
+		
 		// Set the toolbar
 		//$this->addToolBar();
  

@@ -3,14 +3,14 @@
  
 	<name>COM_SUBS</name>
 	<!-- The following elements are optional and free of formatting constraints -->
-	<creationDate>Dec 2016</creationDate>
+	<creationDate>11 Nov 2018</creationDate>
 	<author>Geoff Markley</author>
 	<authorEmail>geoffm@labyrinth.net.au</authorEmail>
 	<authorUrl>http://www.ormondskiclub.com.au</authorUrl>
 	<copyright>Copyright Info</copyright>
 	<license>License Info</license>
 	<!--  The version string is recorded in the components table -->
-	<version>1.0.13</version>
+	<version>1.1.12</version>
 	<!-- The description is optional and defaults to the name -->
 	<description>COM_SUBS_DESCRIPTION</description>
  
@@ -57,6 +57,8 @@
 			<folder>sql</folder>
 			<!-- models files section -->
 			<folder>models</folder>
+			<!-- models files section -->
+			<folder>helpers</folder>
 			<!-- views files section -->
 			<folder>views</folder>
 			<!-- controller files section -->
