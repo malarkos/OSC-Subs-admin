@@ -9,6 +9,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+JHtml::_ ( 'formbehavior.chosen', 'select' );
 ?>
 
 
@@ -18,13 +19,84 @@ defined('_JEXEC') or die('Restricted access');
 <div id="j-main-container" class="span10">
      <h1><?php echo $this->msg; ?></h1>
      This component allows you to manage the Subs administration.<p>
-     The links on the left are for: <b>Update</b>
-     <ul>
-     	<li><b>Subscription rates:</b> to manage rates used for annual subscription notices.</li>
-     	<li><b>Summer Lodge rates:</b> to manage the nightly charge rate for summer bookings.</li>
-     	<li><b>Winter Lodge rates:</b> to manage the nightly charge rate for winters bookings.</li>
-     	<li><b>Student Week dates:</b> to specify the dates for Students Week. This then blocks these dates for general bookings.</li>
-     	<li><b>President's Weekend dates:</b> to specify the dates for President's Weekend. This then blocks these dates for general bookings.</li>
-     	<li><b>Ski Season dates:</b> to specify dates for when Winter Lodge rates apply - i.e. the Ski Season</li>
-     </ul>
+     <form action="index.php?option=com_subs&view=subssummary" method="post"
+	id="adminForm" name="adminForm">
+
+	<table class="table table-striped table-hover">
+		<thead>
+			<tr>
+				<th width="5%">
+					<?php echo JText::_('COM_SUBS_SUBSSUMMARYID'); ?>
+				</th>
+				<th width="2%">
+				<?php echo JHtml::_('grid.checkall'); ?>
+				</th>
+				<th width="10%">
+				<?php echo JText::_('COM_SUBS_SUBSSUMMARY_YEAR') ;?>
+				</th>
+				<th width="10%">
+				<?php echo JText::_('COM_SUBS_SUBSSUMMARY_SUBSSTARTDATE') ;?>
+				</th>
+				<th width="10%">
+				<?php echo JText::_('COM_SUBS_SUBSSUMMARY_SUBSENDDATE') ;?>
+				</th>
+				<th width="10%">
+				<?php echo JText::_('COM_SUBS_SUBSSUMMARY_SUBSPAYBYDATE') ;?>
+				</th>
+				<th width="10%">
+				<?php echo JText::_('COM_SUBS_SUBSSUMMARY_SUBSPAIDRESET') ;?>
+				</th>
+				<th width="10%">
+				<?php echo JText::_('COM_SUBS_SUBSSUMMARY_SUBSALLOCATED') ;?>
+				</th>
+			</tr>
+		</thead>
+		<tfoot>
+			<tr>
+				<td colspan="8">
+					<?php echo $this->pagination->getListFooter(); ?>
+				</td>
+			</tr>
+		</tfoot>
+		<tbody>
+		<?php if (!empty($this->items)) : ?>
+				<?php foreach ( $this->items as $i => $row ): 
+				    $link = JRoute::_ ( 'index.php?option=com_subs&task=subsummary.edit&id=' . $row->id );
+				
+				?>
+				<tr>
+				<td align="center">
+							<?php echo $row->id; ?>
+				</td>
+				<td>
+							<?php echo JHtml::_('grid.id', $i, $row->id); ?>
+				</td>
+				<td>
+							<?php echo $row->subsyear; ?>
+				</td>
+				<td>
+							<?php echo $row->subsstartdate; ?>
+				</td>
+				<td>
+							<?php echo $row->subsenddate; ?>
+				</td>
+				<td>
+							<?php echo $row->subpaybydate; ?>
+				</td>
+				<td>
+							<?php echo $row->SubsPaidReset; ?>
+				</td>
+				<td>
+							<?php echo $row->SubsAllocated; ?>
+				</td>
+				
+				</tr>
+				<?php endforeach; ?>
+			<?php endif; ?>
+		</tbody>
+	</table>
+	<input type="hidden" name="task" value="" /> 
+	<input type="hidden" name="boxchecked" value="0" /> 
+	<?php echo JHtml::_('form.token'); ?>
+</form>			
 </div>
