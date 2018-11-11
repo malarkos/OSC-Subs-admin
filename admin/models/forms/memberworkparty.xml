@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset>
+		<field
+				name="id"
+				type="hidden"
+				/>
+		
+		<field
+			name="WorkPartyDate"
+			type="calendar"
+			
+			label="COM_MEMBERS_WORKPARTY_DATE_LABEL"
+			description="COM_MEMBERS_WORKPARTY_DATE_DESC"
+			
+			format="%Y-%m-%d %H:%M:%S"
+			size="22"
+			filter="user_utc"
+		/>		 
+		
+		<field
+				name="WorkPartyDays"
+				type="text"
+				label="COM_MEMBERS_WORKPARTY_DATE_LABEL"
+				description="COM_MEMBERS_WORKPARTY_DATE_LABEL"
+				size="40"
+				class="inputbox"
+				default=""
+				/>
+		<field
+				name="Comments"
+				type="text"
+				label="COM_MEMBERS_WORKPARTY_COMMENTS_LABEL"
+				description="COM_MEMBERS_WORKPARTY_COMMENTS_DESC"
+				size="80"
+				class="inputbox"
+				default=""
+				/>
+	</fieldset>
+	
+</form>

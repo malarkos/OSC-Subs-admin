@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset name="member_summary"  addfieldpath="/administrator/components/com_members/models/fields">
+		<field
+				name="id"
+				type="hidden"
+				/>
+		
+				 
+		<field name="joomlauserid" 
+                type="sql"
+                label="COM_MEMBERS_MANAGER_JOOMLA_USER"
+                desc=""
+                query="SELECT u.id , u.name FROM #__users as u "
+                multiple="single" 
+                key_field="id" 
+                value_field="name"
+                />
+		<field
+				name="MemberTitle"
+				type="text"
+				label="COM_MEMBERS_MEMBER_TITLE_LABEL"
+				description="COM_MEMBERS_MEMBER_TITLE_DESC"
+				size="40"
+				class="inputbox"
+				default=""
+				/>
+		<field
+				name="MemberFirstname"
+				type="text"
+				label="COM_MEMBERS_MEMBER_FIRSTNAME_LABEL"
+				description="COM_MEMBERS_MEMBER_FIRSTNAME_DESC"
+				size="40"
+				class="inputbox"
+				default=""
+				/>
+		<field
+				name="MemberSurname"
+				type="text"
+				label="COM_MEMBERS_MEMBER_SURNAME_LABEL"
+				description="COM_MEMBERS_MEMBER_SURNAME_DESC"
+				size="40"
+				class="inputbox"
+				default=""
+				/>
+		<field
+				name="MemberType"
+				type="list"
+				label="COM_MEMBERS_MEMBER_TYPE_LABEL"
+				description="COM_MEMBERS_MEMBER_TYPE_DESC"
+				class="inputbox"
+				default="Prelim app"
+				>
+			<option value="Life">Life</option>
+			<option value="Hon Life">Hon Life</option>
+			<option value="Graduate">Graduate</option>
+			<option value="Student">Student</option>
+			<option value="Spouse">Spouse</option>
+			<option value="Child">Child</option>
+			<option value="Applicant">Applicant</option>
+			<option value="Prelim app">Prelim app</option>
+			<option value="Resigned">Resigned</option>
+			<option value="Terminated">Terminated</option>
+			<option value="Deceased">Deceased</option>
+			<option value="Rejected">Rejected</option>
+		</field>
+		<field
+			name="MemberBirthDate"
+			type="calendar"
+			
+			label="COM_MEMBERS_MEMBER_DOB_LABEL"
+			description="COM_MEMBERS_MEMBER_DOB_DESC"
+			
+			format="%Y-%m-%d %H:%M:%S"
+			size="22"
+			filter="user_utc"
+		/>
+		<field
+				name="MemberHomeAddress"
+				type="text"
+				label="COM_MEMBERS_MEMBER_ADDRESS_LABEL"
+				description="COM_MEMBERS_MEMBER_ADDRESS_DESC"
+				size="40"
+				class="inputbox"
+				default=""
+				/>
+		<field
+				name="MemberHomeAddress2"
+				type="text"
+				label="COM_MEMBERS_MEMBER_ADDRESS2_LABEL"
+				description="COM_MEMBERS_MEMBER_ADDRESS2_DESC"
+				size="40"
+				class="inputbox"
+				default=""
+				/>
+		<field
+				name="MemberHomeSuburb"
+				type="text"
+				label="COM_MEMBERS_MEMBER_SUBURB_LABEL"
+				description="COM_MEMBERS_MEMBER_SUBURB_DESC"
+				size="40"
+				class="inputbox"
+				default=""
+				/>
+		<field
+				name="MemberHomeState"
+				type="text"
+				label="COM_MEMBERS_MEMBER_STATE_LABEL"
+				description="COM_MEMBERS_MEMBER_STATE_DESC"
+				size="40"
+				class="inputbox"
+				default=""
+				/>
+		<field
+				name="MemberHomePostcode"
+				type="text"
+				label="COM_MEMBERS_MEMBER_POSTCODE_LABEL"
+				description="COM_MEMBERS_MEMBER_POSTCODE_DESC"
+				size="40"
+				class="inputbox"
+				default=""
+				/>
+		
+		
+		
+		
+		
+		<field
+				name="MemberEmail"
+				type="text"
+				label="COM_MEMBERS_MEMBER_EMAIL_LABEL"
+				description="COM_MEMBERS_MEMBER_EMAIL_DESC"
+				size="40"
+				class="inputbox"
+				default=""
+				validate="email"
+				/>
+		<field
+				name="MemberEmail2"
+				type="text"
+				label="COM_MEMBERS_MEMBER_EMAIL2_LABEL"
+				description="COM_MEMBERS_MEMBER_EMAIL2_DESC"
+				size="40"
+				class="inputbox"
+				default=""
+				validate="email"
+				/>
+		<field
+				name="MemberPhoneMobile"
+				type="text"
+				label="COM_MEMBERS_MEMBER_PHONEMOBILE_LABEL"
+				description="COM_MEMBERS_MEMBER_PHONEMOBILE_DESC"
+				size="40"
+				class="inputbox"
+				default=""
+				
+				/>
+		<field
+				name="MemberPhoneWork"
+				type="text"
+				label="COM_MEMBERS_MEMBER_PHONEWORK_LABEL"
+				description="COM_MEMBERS_MEMBER_PHONEWORK_DESC"
+				size="40"
+				class="inputbox"
+				default=""
+				
+				/>
+		
+		<field
+				name="MemberPhoneHome"
+				type="text"
+				label="COM_MEMBERS_MEMBER_PHONEHOME_LABEL"
+				description="COM_MEMBERS_MEMBER_PHONEHOME_DESC"
+				size="40"
+				class="inputbox"
+				default=""
+				
+				/>
+		<field
+				name="MemberPhoneFax"
+				type="text"
+				label="COM_MEMBERS_MEMBER_PHONEFAX_LABEL"
+				description="COM_MEMBERS_MEMBER_PHONEFAX_DESC"
+				size="40"
+				class="inputbox"
+				default=""
+				
+				/>
+		
+		<field name="MemberLeaveofAbsence"
+		       type="list"
+		       default="No"
+		       label="COM_MEMBERS_MEMBER_LOA_LABEL"
+			description="COM_MEMBERS_MEMBER_LOA_DESC">
+		       
+			<option value="No">No</option>
+			<option value="Yes">Yes</option>
+		 </field>
+		
+	</fieldset>
+	<fieldset name="member_dates">
+		<field
+			name="MemberApplicationDate"
+			type="calendar"
+			
+			label="COM_MEMBERS_MEMBER_APPDATE_LABEL"
+			description="COM_MEMBERS_MEMBER_APPDATE_DESC"
+			
+			format="%Y-%m-%d %H:%M:%S"
+			size="22"
+			filter="user_utc"
+		/>
+		<field
+			name="MemberOfferdate"
+			type="calendar"
+			
+			label="COM_MEMBERS_MEMBER_OFFERDATE_LABEL"
+			description="COM_MEMBERS_MEMBER_OFFERDATE_DESC"
+			
+			format="%Y-%m-%d %H:%M:%S"
+			size="22"
+			filter="user_utc"
+		/>
+		<field
+			name="MemberJoiningDate"
+			type="calendar"
+			
+			label="COM_MEMBERS_MEMBER_JOINDATE_LABEL"
+			description="COM_MEMBERS_MEMBER_JOINDATE_DESC"
+			
+			format="%Y-%m-%d %H:%M:%S"
+			size="22"
+			filter="user_utc"
+		/>
+		<field
+			name="MemberDate8wpdays"
+			type="calendar"
+			
+			label="COM_MEMBERS_MEMBER_8WPDATE_LABEL"
+			description="COM_MEMBERS_MEMBER_8WPDATE_DESC"
+			
+			format="%Y-%m-%d %H:%M:%S"
+			size="22"
+			filter="user_utc"
+		/>
+		<field
+			name="MemberDepartureDate"
+			type="calendar"
+			
+			label="COM_MEMBERS_MEMBER_DEPARTDATE_LABEL"
+			description="COM_MEMBERS_MEMBER_DEPARTDATE_DESC"
+			
+			format="%Y-%m-%d %H:%M:%S"
+			size="22"
+			filter="user_utc"
+		/>
+			<field 	name="lastModified" 
+				type="lastmodified"
+				label="" 
+				description="" 
+				readonly="true"
+				/>
+	</fieldset>
+	<fieldset name="member_other">
+		<field name="SummerUsageOnly"
+		       type="list"
+		       default="No"
+		       label="COM_MEMBERS_MEMBER_SUMMER_LABEL"
+			description="COM_MEMBERS_MEMBER_SUMMER_DESC">
+		       
+			<option value="No">No</option>
+			<option value="Yes">Yes</option>
+		 </field>
+		
+		<field name="MemberComments" type="textarea" default="" label="Comments" description="" rows="10" cols="5" />
+	</fieldset>
+	
+</form>
