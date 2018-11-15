@@ -56,118 +56,100 @@ class SubsModelSubsSummary extends JModelList
 	
 	public function AddAllSubs()
 	{
+	    
+	    
 	    // Get subs year
 	    require_once JPATH_COMPONENT . '/helpers/subs.php';
 	    $subsyear = SubsHelper::returnSubsYear();
 	    $substartdate = SubsHelper::returnSubsStartDate($subsyear);
 	    
-	    // TODO: function to get all Subs
+	    // check if already added
+	    $subsadded = SubsHelper::checkIfSubsAdded($subsyear);
 	    
-	    // Function to add all subs
-	    $app = JFactory::getApplication ();
-	    $app->enqueueMessage('In Add All Subs');
+	    if ($subsadded == 'n') 
+	    {
+    	    // Function to add all subs
+    	    $app = JFactory::getApplication ();
+    	    $app->enqueueMessage('In Add All Subs');
+    	    
+    	    // get database object
+    	    $db = JFactory::getDbo ();
+    	    $query = $db->getQuery ( true );
+    	    
+    	    // global variables
+    	    $ngraduatesubs = 0;
+    	    $nstudentsubs = 0;
+    	    $nspousesubs = 0;
+    	    $nchildsubs = 0;
+    	    $nbuddysubs = 0;
+    	    $nlockersubs = 0;
+    	    $ntotalsubs = 0;
+    	    $financetype = 's';
+    	    
+    	    // If Subs already added, create error and return
+    	    
+    	    // Add subs
+    	    // Cycle through each Member
+    	       
+    	    $query->select ( '*' );
+    	    $query->from ( 'members' );
+    	    $db->setQuery ( $query );
+    	    $db->execute ();
+    	    
+    	    $num_rows = $db->getNumRows ();
+    	    $members = $db->loadObjectList ();
+    	    for($i = 0; $i <25;  $i++) { //$num_rows;
+    	        $memfirstname = $members [$i]->MemberFirstname;
+    	        $memid = $members [$i]->MemberID;
+    	        $memsurname = $members [$i]->MemberSurname;
+    	        $memtype = $members [$i]->MemberType;
+    	        $memloa = $members [$i]->MemberLeaveofAbsence;
+    	        
+    	        
+    	        // add Member sub
+    	        // Add Family member sub & set subs paid flag to no in Family members
+    	        // Add Locker sub
+    	        // Set subs paid flag to No unless new balance is positive - i.e. subs paid out of existing funds
+    	        if ($memloa == "No") { // Only look at current members
+    	            if ($memtype == "Graduate" || $memtype == "Student" || $memtype == "Life" || $memtype == "Hon Life") {
+    	                   $app->enqueueMessage('Member:  '.$memid. ' '.$memfirstname . ' ' . $memsurname . ' '.$memtype. ' '.$memloa);
+    	                   
+    	                   // Update Grad sub count
+    	                   $ngraduatesubs++;
+    	                   $ntotalsubs++;
+    	                   
+    	                   // Add sub to Finance 
+    	                   $today=time();
+    	                   $transactiondate = date("Y-m-d",$today);
+    	                   $creditdebit = "D";
+    	                   $comment="";
+    	                   $description = $memtype . ' Member subscription.';
+    	                   if ($memtype == "Graduate" || $memtype == "Student" ) {
+    	                       $amount = -1.0 * SubsHelper::returnSubrate($subsyear,$memtype); // Get sub rate for the year
+    	                       SubsHelper::setCurrentSubsPaid($memid,"No");  // Reset current subs paid flag
+    	                   }
+    	                   else if ($memtype == "Life" || $memtype == "Hon Life")
+    	                   {
+    	                       $amount = 0;  // Life and Hon Life subs = 0
+    	                       SubsHelper::setCurrentSubsPaid($memid,"Yes");  // Life and Hon Life members are paid by default
+    	                   }
+    	                   $amountnogst = (10*$amount)/11;
+    	                   $gst = $amount/11;
+    	                   
+    	                   // Add finance entry
+    	                   SubsHelper::addFinanceEntry($memid,$substartdate,$creditdebit,$amountnogst,$gst,$amount,$description,$comment,$financetype,$subsyear);
+    	                  
+    	                   
+    	            }
+    	        }
+    	    }
 	    
-	    // get database object
-	    $db = JFactory::getDbo ();
-	    $query = $db->getQuery ( true );
-	    
-	    // global variables
-	    $ngraduatesubs = 0;
-	    $nstudentsubs = 0;
-	    $nspousesubs = 0;
-	    $nchildsubs = 0;
-	    $nbuddysubs = 0;
-	    $nlockersubs = 0;
-	    $ntotalsubs = 0;
-	    $financetype = 's';
-	    
-	    // If Subs already added, create error and return
-	    
-	    // Add subs
-	    // Cycle through each Member
-	       
-	    $query->select ( '*' );
-	    $query->from ( 'members' );
-	    $db->setQuery ( $query );
-	    $db->execute ();
-	    
-	    $num_rows = $db->getNumRows ();
-	    $members = $db->loadObjectList ();
-	    for($i = 0; $i <25;  $i++) { //$num_rows;
-	        $memfirstname = $members [$i]->MemberFirstname;
-	        $memid = $members [$i]->MemberID;
-	        $memsurname = $members [$i]->MemberSurname;
-	        $memtype = $members [$i]->MemberType;
-	        $memloa = $members [$i]->MemberLeaveofAbsence;
-	        
-	        
-	        // add Member sub
-	        // Add Family member sub & set subs paid flag to no in Family members
-	        // Add Locker sub
-	        // Set subs paid flag to No unless new balance is positive - i.e. subs paid out of existing funds
-	        if ($memloa == "No") { // Only look at current members
-	            if ($memtype == "Graduate" || $memtype == "Student" || $memtype == "Life" || $memtype == "Hon Life") {
-	                   $app->enqueueMessage('Member:  '.$memid. ' '.$memfirstname . ' ' . $memsurname . ' '.$memtype. ' '.$memloa);
-	                   
-	                   // Update Grad sub count
-	                   $ngraduatesubs++;
-	                   $ntotalsubs++;
-	                   
-	                   // Add sub to Finance 
-	                   $today=time();
-	                   $transactiondate = date("Y-m-d",$today);
-	                   $creditdebit = "D";
-	                   $comment="";
-	                   $description = $memtype . ' subscription';
-	                   $amount = -1.0 * 180; // TODO get graduate subs
-	                   $amountnogst = (10*$amount)/11;
-	                   $gst = $amount/11;
-	                   
-	                
-	                   
-	                   $query = $db->getQuery(true)
-	                   ->insert('finances')
-	                   ->columns(array(
-	                       $db->quoteName('MemberID'),
-                           $db->quoteName('TransactionDate'),
-	                       $db->quoteName('CreditDebit'),
-	                       $db->quoteName('AmountNoGST'),
-	                       $db->quoteName('GST'),
-	                       $db->quoteName('Amount'),
-	                       $db->quoteName('Description'),
-	                       $db->quoteName('Comment'),
-	                       $db->quoteName('FinanceType'),
-	                       $db->quoteName('FinanceYear')
-	                       ))->values(array(
-	                       $db->quote($memid),
-	                       $db->quote($substartdate),
-	                       $db->quote($creditdebit),
-	                       $db->quote($amountnogst),
-	                       $db->quote($gst),
-	                       $db->quote($amount),
-	                       $db->quote($description),
-	                       $db->quote($comment),
-	                       $db->quote($financetype),
-	                       $db->quote($subsyear)
-	                       ));
-	                   // Update Subs paid flag to No
-	                       $app->enqueueMessage('Query = '.$query);
-	                      try
-	                           {
-	                              // $db->setQuery($query)->execute();
-	                       }
-	                       catch (\Exception $e)
-	                       {
-	                           // Your database if FUBAR.
-	                           return;
-	                       }
-	                   
-	            }
-	        }
 	    }
-	    
-	    
+	    else 
+	    {
+	        JFactory::getApplication()->enqueueMessage('Error: Subs already added!', 'error');
+	    }
 	    //  Update flag to say subs have been run
-	    return;
+	    return; 
 	}
 }
