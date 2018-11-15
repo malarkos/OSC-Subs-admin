@@ -30,6 +30,7 @@ class SubsViewSubsSummary extends JViewLegacy
 	    //$context = "members.list.admin.subs";
 	    // Get data from the model
 	    $this->items		= $this->get('Items');
+	    $this->subsyear    = $this->get('SubsYear');
 	    $this->pagination	= $this->get('Pagination');
 	    $this->state			= $this->get('State');
 	    
@@ -51,7 +52,7 @@ class SubsViewSubsSummary extends JViewLegacy
 		$this->sidebar = JHtmlSidebar::render();
 		
 		// Set the toolbar
-		//$this->addToolBar();
+		$this->addToolBar();
 		
 		// Display the template
 		parent::display($tpl);
@@ -67,14 +68,15 @@ class SubsViewSubsSummary extends JViewLegacy
 	protected function addToolBar()
 	{
 	    
-	    if ($this->pagination->total)
+	    /*if ($this->pagination->total)
 	    {
 	        $title .= "<span style='font-size: 0.5em; vertical-align: middle;'>(" . $this->pagination->total . ")</span>";
-	    }
+	    }*/
 	    
 	    JToolBarHelper::title(JText::_('COM_SUBS_MANAGER'));
-	    JToolBarHelper::addNew('sub.add');
-	    JToolBarHelper::editList('sub.edit');
+	    //JToolBarHelper::addNew('sub.add');
+	    //JToolBarHelper::editList('sub.edit');
+	    JToolBarHelper::custom( 'SubsSummary.AddSubs', '', '', 'Add Subs', false, false );
 	    
 	}
 }

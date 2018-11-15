@@ -40,4 +40,30 @@ class SubsHelper extends JHelperContent
             $vName == 'subsreferencedates'
             );
     }
+    
+    public function returnSubsYear()
+    {
+        $db = JFactory::getDbo ();
+        $query = $db->getQuery ( true );
+        $query->select ( 'subsyear' );
+        $query->from ( 'oscreference' );
+        $query->where ( 'id = 1 '  );  // Data only in the first row
+        $db->setQuery ( $query );
+        $subsyear = $db->loadResult();
+        
+        return ($subsyear);
+    }
+    
+    public function returnSubsStartDate($year)
+    {
+        $db = JFactory::getDbo ();
+        $query = $db->getQuery ( true );
+        $query->select ( 'subsstartdate' );
+        $query->from ( 'oscsubsreferencedates' );
+        $query->where ( 'subsyear =  '. $year  );  // Data only in the first row
+        $db->setQuery ( $query );
+        $subsyear = $db->loadResult();
+        
+        return ($subsyear);
+    }
 }

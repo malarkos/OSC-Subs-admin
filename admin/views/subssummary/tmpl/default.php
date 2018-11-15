@@ -19,6 +19,8 @@ JHtml::_ ( 'formbehavior.chosen', 'select' );
 <div id="j-main-container" class="span10">
      <h1><?php echo $this->msg; ?></h1>
      This component allows you to manage the Subs administration.<p>
+     
+     Current selected Subs year to update:  <?php echo $this->subsyear;?>
      <form action="index.php?option=com_subs&view=subssummary" method="post"
 	id="adminForm" name="adminForm">
 
