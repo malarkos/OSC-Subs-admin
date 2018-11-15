@@ -143,7 +143,8 @@ class SubsModelSubsSummary extends JModelList
     	            }
     	        }
     	    }
-	    
+	        // Set flag to say subs have been added
+    	    SubsHelper::setSubsAdded($subsyear);
 	    }
 	    else 
 	    {

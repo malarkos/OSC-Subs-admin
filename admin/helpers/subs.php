@@ -86,42 +86,48 @@ class SubsHelper extends JHelperContent
         
         // Connect to database
         $db = JFactory::getDbo ();
-        // Set query
-        $query = $db->getQuery(true)
-        ->insert('finances')
-        ->columns(array(
-            $db->quoteName('MemberID'),
-            $db->quoteName('TransactionDate'),
-            $db->quoteName('CreditDebit'),
-            $db->quoteName('AmountNoGST'),
-            $db->quoteName('GST'),
-            $db->quoteName('Amount'),
-            $db->quoteName('Description'),
-            $db->quoteName('Comment'),
-            $db->quoteName('FinanceType'),
-            $db->quoteName('FinanceYear')
-        ))->values(array(
-            $db->quote($memid),
+        
+        $columns =  array(
+            'MemberID',
+            'TransactionDate',
+            'CreditDebit',
+            'AmountNoGST',
+            'GST',
+            'Amount',
+            'Description',
+            'Comment',
+            'FinanceType',
+            'FinanceYear',
+            'OldMemberID'); 
+        $values = array(
+            $memid,
             $db->quote($substartdate),
             $db->quote($creditdebit),
-            $db->quote($amountnogst),
-            $db->quote($gst),
-            $db->quote($amount),
+            $amountnogst,
+            $gst,
+            $amount,
             $db->quote($description),
             $db->quote($comment),
             $db->quote($financetype),
-            $db->quote($subsyear)
-        ));
+            $subsyear,
+            $memid);
+        // Set query
+        $query = $db->getQuery(true);
+        $query->insert('finances');
+        $query->columns($db->quoteName($columns));
+        $query->values(implode(',', $values));
+        $db->setQuery($query);
         
         $app->enqueueMessage('Query = '.$query);
         try
         {
-            // $db->setQuery($query)->execute();
+            $app->enqueueMessage('In try ');
+            $db->execute();
         }
-        catch (\Exception $e)
+        catch (Exception $e)
         {
-            // Your database if FUBAR.
             
+            JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
         }
         return;
     }
@@ -161,5 +167,31 @@ class SubsHelper extends JHelperContent
             $subsadded = $db->loadResult();
         }
         return ($subsadded);
+    }
+    
+    public function setSubsAdded($year) {
+        
+        // Get handle to Application
+        $app = JFactory::getApplication ();
+        
+        $db = JFactory::getDbo ();
+        $sql    = $db->getQuery(true)
+        ->update($db->qn('oscsubsreferencedates'))
+        ->set($db->qn('SubsAllocated') . ' = ' . $db->q('y'))
+        ->where($db->qn('subsyear') . ' = ' . $db->q($year));
+        $db->setQuery($sql);
+        $db->execute();
+        
+        try
+        {
+            $app->enqueueMessage('In try ');
+            $db->execute();
+        }
+        catch (Exception $e)
+        {
+            
+            JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+        }
+        return;
     }
 }

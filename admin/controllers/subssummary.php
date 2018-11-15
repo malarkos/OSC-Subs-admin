@@ -43,6 +43,12 @@ class SubsControllerSubsSummary extends JControllerAdmin
 	    
 	    $model->AddAllSubs();
 	    
+	    // Set return URL
+	    
+	    $returnurl = 'index.php?option=com_subs&view=subssummary';
+	    
+	    $this->setRedirect($returnurl);
+	    
 	    return;
 	}
 }
