@@ -79,7 +79,7 @@ class SubsHelper extends JHelperContent
         
         return ($subsstartdate);
     }
-    public function addFinanceEntry($memid,$substartdate,$creditdebit,$amountnogst,$gst,$amount,$description,$comment,$financetype,$subsyear)
+    public function addFinanceEntry($memid,$substartdate,$creditdebit,$amountnogst,$gst,$amount,$description,$comment,$financetype,$subsyear,$membertype,$memberrefid)
     {
         // Get handle to Application
         $app = JFactory::getApplication ();
@@ -98,7 +98,10 @@ class SubsHelper extends JHelperContent
             'Comment',
             'FinanceType',
             'FinanceYear',
-            'OldMemberID'); 
+            'OldMemberID',
+            'MemberType',
+            'MemberRefID'
+        ); 
         $values = array(
             $memid,
             $db->quote($substartdate),
@@ -110,7 +113,9 @@ class SubsHelper extends JHelperContent
             $db->quote($comment),
             $db->quote($financetype),
             $subsyear,
-            $memid);
+            $memid,
+            $db->quote($membertype),
+            $memberrefid);
         // Set query
         $query = $db->getQuery(true);
         $query->insert('finances');
@@ -169,7 +174,7 @@ class SubsHelper extends JHelperContent
         return ($subsadded);
     }
     
-    public function setSubsAdded($year) {
+    public function setSubsAdded($year,$flag) {
         
         // Get handle to Application
         $app = JFactory::getApplication ();
@@ -177,7 +182,7 @@ class SubsHelper extends JHelperContent
         $db = JFactory::getDbo ();
         $sql    = $db->getQuery(true)
         ->update($db->qn('oscsubsreferencedates'))
-        ->set($db->qn('SubsAllocated') . ' = ' . $db->q('y'))
+        ->set($db->qn('SubsAllocated') . ' = ' . $db->q($flag))
         ->where($db->qn('subsyear') . ' = ' . $db->q($year));
         $db->setQuery($sql);
         $db->execute();
@@ -194,4 +199,128 @@ class SubsHelper extends JHelperContent
         }
         return;
     }
+    
+    public function deleteFinanceEntry($financeid,$value) {
+        
+        // Get handle to Application
+        $app = JFactory::getApplication ();
+        
+        $db = JFactory::getDbo ();
+        $sql    = $db->getQuery(true)
+        ->update($db->qn('finances'))
+        ->set($db->qn('MemberID') . ' = ' . $db->q($value))
+        ->where($db->qn('FinanceID') . ' = ' . $db->q($financeid));
+        $db->setQuery($sql);
+        $db->execute();
+        
+        try
+        {
+            $app->enqueueMessage('In deleteFinanceEntry ');
+            $db->execute();
+        }
+        catch (Exception $e)
+        {
+            
+            JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+        }
+        return;
+    }
+    
+    public function updateSubsSummary($subsyear,$ngraduatesubs,$nstudentsubs,$nlifehonlifesubs,$nspousesubs,$nchildsubs,$nbuddysubs,$nlockersubs,$nsummersubs)
+    {
+        
+        // check if there's already a row
+        $app = JFactory::getApplication ();
+        
+        $db = JFactory::getDbo ();
+        $query = $db->getQuery ( true );
+        $query->select ( 'id');
+        $query->from ( 'subssummary' );
+        $query->where ( 'year =  '. $subsyear  );  // Data only in the first row
+        $db->setQuery ( $query );
+        $db->execute();
+        $num_rows = $db->getNumRows();
+        //$app->enqueueMessage('Query = '.$query);
+        $subsadded = $db->loadResult();
+        //$app->enqueueMessage('Added = '.$subsadded.":");
+        
+        if ($num_rows == 0) {
+            // Need to insert a role
+            $columns =  array(
+                'year',
+                'Graduatecount',
+                'Childcount',
+                'Spousecount',
+                'lockercount',
+                'buddycount',
+                'summercount',
+                'lifehonlifecount',
+                'studentcount'
+            );
+            $values = array(
+                $subsyear,
+                $ngraduatesubs,
+                $nchildsubs,
+                $nspousesubs,
+                $nlockersubs,
+                $nbuddysubs,
+                $nsummersubs,
+                $nlifehonlifesubs,
+                $nstudentsubs);
+            // Set query
+            $query = $db->getQuery(true);
+            $query->insert('subssummary');
+            $query->columns($db->quoteName($columns));
+            $query->values(implode(',', $values));
+            $db->setQuery($query);
+            
+            $app->enqueueMessage('Query = '.$query);
+            try
+            {
+                $app->enqueueMessage('In try ');
+                $db->execute();
+            }
+            catch (Exception $e)
+            {
+                
+                JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            }
+        }
+        else {
+           // Need to update the row
+            $query = $db->getQuery ( true );
+            $fields = array(
+                'Graduatecount = '.$ngraduatesubs,
+                'Childcount = '.$nchildsubs,
+                'Spousecount = '.$nspousesubs,
+                'lockercount = '.$nlockersubs,
+                'buddycount = '.$nbuddysubs,
+                'summercount = '.$nsummersubs,
+                'lifehonlifecount = '.$nlifehonlifesubs,
+                'studentcount = '.$nstudentsubs
+                
+            );
+            $conditions = array('year = '. $subsyear );
+            $query->update('subssummary');
+            $query->set($fields);
+            $query->where($conditions);
+            
+            $db->setQuery ( $query );
+            try
+            {
+                $app->enqueueMessage('In try ');
+                $db->execute();
+            }
+            catch (Exception $e)
+            {
+                
+                JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            }
+            
+        }
+        // if no, insert
+        // if yes, update values
+        return;
+    }
+    
 }

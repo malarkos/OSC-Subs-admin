@@ -77,12 +77,15 @@ class SubsModelSubsSummary extends JModelList
     	    $query = $db->getQuery ( true );
     	    
     	    // global variables
+    	    // TODO - add Summer usage only check
     	    $ngraduatesubs = 0;
     	    $nstudentsubs = 0;
+    	    $nlifehonlifesubs=0;
     	    $nspousesubs = 0;
     	    $nchildsubs = 0;
     	    $nbuddysubs = 0;
     	    $nlockersubs = 0;
+    	    $nsummersubs = 0;
     	    $ntotalsubs = 0;
     	    $financetype = 's';
     	    
@@ -122,29 +125,41 @@ class SubsModelSubsSummary extends JModelList
     	                   $today=time();
     	                   $transactiondate = date("Y-m-d",$today);
     	                   $creditdebit = "D";
-    	                   $comment="";
+    	                   $comment= $subsyear . ' Subscriptions.';
     	                   $description = $memtype . ' Member subscription.';
-    	                   if ($memtype == "Graduate" || $memtype == "Student" ) {
+    	                   if ($memtype == "Graduate"  ) {
+    	                       $ngraduatesubs++;
+    	                       $amount = -1.0 * SubsHelper::returnSubrate($subsyear,$memtype); // Get sub rate for the year
+    	                       SubsHelper::setCurrentSubsPaid($memid,"No");  // Reset current subs paid flag
+    	                   }
+    	                   else if ( $memtype == "Student" ) {
+    	                       $nstudentsubs++;
     	                       $amount = -1.0 * SubsHelper::returnSubrate($subsyear,$memtype); // Get sub rate for the year
     	                       SubsHelper::setCurrentSubsPaid($memid,"No");  // Reset current subs paid flag
     	                   }
     	                   else if ($memtype == "Life" || $memtype == "Hon Life")
     	                   {
+    	                       $nlifehonlifesubs++;
     	                       $amount = 0;  // Life and Hon Life subs = 0
     	                       SubsHelper::setCurrentSubsPaid($memid,"Yes");  // Life and Hon Life members are paid by default
     	                   }
     	                   $amountnogst = (10*$amount)/11;
     	                   $gst = $amount/11;
+    	                   $membertype = "m";
+    	                   
     	                   
     	                   // Add finance entry
-    	                   SubsHelper::addFinanceEntry($memid,$substartdate,$creditdebit,$amountnogst,$gst,$amount,$description,$comment,$financetype,$subsyear);
+    	                   SubsHelper::addFinanceEntry($memid,$substartdate,$creditdebit,$amountnogst,$gst,$amount,$description,$comment,$financetype,$subsyear,$membertype,$memid);
     	                  
     	                   
     	            }
     	        }
     	    }
 	        // Set flag to say subs have been added
-    	    SubsHelper::setSubsAdded($subsyear);
+    	    SubsHelper::setSubsAdded($subsyear,"y");
+    	    // update Subsummary
+    	    SubsHelper::updateSubsSummary($subsyear,$ngraduatesubs,$nstudentsubs,$nlifehonlifesubs,$nspousesubs,$nchildsubs,$nbuddysubs,$nlockersubs,$nsummersubs);
+    	    
 	    }
 	    else 
 	    {
@@ -152,5 +167,52 @@ class SubsModelSubsSummary extends JModelList
 	    }
 	    //  Update flag to say subs have been run
 	    return; 
+	}
+	
+	public function RemoveAllSubs()
+	{
+	    // Function to add all subs
+	    $app = JFactory::getApplication ();
+	    $app->enqueueMessage('In Remove All Subs');
+	    require_once JPATH_COMPONENT . '/helpers/subs.php';
+	    $subsyear = SubsHelper::returnSubsYear();
+	    // Set flag to say subs have been removed
+	    SubsHelper::setSubsAdded($subsyear,"n");
+	    
+	    // Need to cycle through all Finance entries and set MemberID to zero for all current year subs
+	    
+	    // get db
+	    $db = JFactory::getDbo ();
+	    $query = $db->getQuery ( true );
+	    $query->select ( '*' );
+	    $query->from ( 'finances' );
+	    $query->where('FinanceType = '. $db->q("s"));
+	    $query->where('FinanceYear = '. $db->q($subsyear));
+	    $query->where('CreditDebit = '.$db->q("D"));
+	    $db->setQuery ( $query );
+	    $app->enqueueMessage('Query = '.$query);
+	    $db->execute ();
+	    
+	    $num_rows = $db->getNumRows ();
+	    $app->enqueueMessage('Numrows = '.$num_rows);
+	    $finances = $db->loadObjectList ();
+	    for($i = 0; $i < $num_rows;  $i++) 
+	    { //Cycle through each line
+	        $financeid = $finances[$i]->FinanceID;
+	        $app->enqueueMessage('FinanceID = '.$financeid);
+	        SubsHelper::deleteFinanceEntry($financeid,0);
+	    }
+	    // update Subsummary
+	    $ngraduatesubs = 0;
+	    $nstudentsubs = 0;
+	    $nlifehonlifesubs=0;
+	    $nspousesubs = 0;
+	    $nchildsubs = 0;
+	    $nbuddysubs = 0;
+	    $nlockersubs = 0;
+	    $nsummersubs = 0;
+	    $ntotalsubs = 0;
+	    SubsHelper::updateSubsSummary($subsyear,$ngraduatesubs,$nstudentsubs,$nlifehonlifesubs,$nspousesubs,$nchildsubs,$nbuddysubs,$nlockersubs,$nsummersubs);
+	    
 	}
 }

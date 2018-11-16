@@ -77,6 +77,7 @@ class SubsViewSubsSummary extends JViewLegacy
 	    //JToolBarHelper::addNew('sub.add');
 	    //JToolBarHelper::editList('sub.edit');
 	    JToolBarHelper::custom( 'SubsSummary.AddSubs', '', '', 'Add Subs', false, false );
+	    JToolBarHelper::custom( 'SubsSummary.RemoveSubs', '', '', 'Remove Subs', false, false );
 	    
 	}
 }

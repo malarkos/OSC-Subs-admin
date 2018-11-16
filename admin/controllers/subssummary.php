@@ -51,4 +51,21 @@ class SubsControllerSubsSummary extends JControllerAdmin
 	    
 	    return;
 	}
+	
+	public function RemoveSubs() {
+	    
+	    
+	    $app = JFactory::getApplication ();
+	    $app->enqueueMessage('In Remove Subs');
+	    
+	    $model = JModelLegacy::getInstance('SubsSummary', 'SubsModel');
+	    
+	    $model->RemoveAllSubs();
+	    
+	    $returnurl = 'index.php?option=com_subs&view=subssummary';
+	    
+	    $this->setRedirect($returnurl);
+	    
+	    return;
+	}
 }
