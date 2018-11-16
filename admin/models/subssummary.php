@@ -150,9 +150,9 @@ class SubsModelSubsSummary extends JModelList
     	                   $db->setQuery ( $query );
     	                   $db->execute ();
     	                   
-    	                   $num_rows = $db->getNumRows ();
+    	                   $fnum_rows = $db->getNumRows ();
     	                   $familymembers = $db->loadObjectList ();
-    	                   for($n=0;$n<$num_rows;$n++){
+    	                   for($n=0;$n<$fnum_rows;$n++){
     	                       $fammemid = $familymembers[$n]->FamilyMemberID;
     	                       $firstname = $familymembers[$n]->FamilyMemberFirstname;
     	                       $surname = $familymembers[$n]->FamilyMemberSurname;
@@ -167,7 +167,7 @@ class SubsModelSubsSummary extends JModelList
     	                           $gst = $amount/11;
     	                           $membertype = "s";
     	                           SubsHelper::addFinanceEntry($memid,$substartdate,$creditdebit,$amountnogst,$gst,$amount,$description,$comment,$financetype,$subsyear,$membertype,$fammemid);
-    	                           
+    	                           SubsHelper::setCurrentSubsPaid($fammemid,"No","f");  // Reset current subs paid flag
     	                       } else 
     	                       if ($fammemtype == "Child"){
     	                               $nchildsubs++;
@@ -176,7 +176,7 @@ class SubsModelSubsSummary extends JModelList
     	                               $gst = $amount/11;
     	                               $membertype = "c";
     	                               SubsHelper::addFinanceEntry($memid,$substartdate,$creditdebit,$amountnogst,$gst,$amount,$description,$comment,$financetype,$subsyear,$membertype,$fammemid);
-    	                               
+    	                               SubsHelper::setCurrentSubsPaid($fammemid,"No","f");  // Reset current subs paid flag
     	                       } else
     	                       if ($fammemtype == "Buddy"){
     	                           $nbuddysubs++;
@@ -186,9 +186,9 @@ class SubsModelSubsSummary extends JModelList
     	                           $gst = $amount/11;
     	                           $membertype = "b";
     	                           SubsHelper::addFinanceEntry($memid,$substartdate,$creditdebit,$amountnogst,$gst,$amount,$description,$comment,$financetype,$subsyear,$membertype,$fammemid);
-    	                           
+    	                           SubsHelper::setCurrentSubsPaid($fammemid,"No","f");  // Reset current subs paid flag
     	                       }
-    	                   }
+    	                   } // for loop for family members
     	                       
     	                   // Add Locker sub
     	                   $query = $db->getQuery ( true );
@@ -198,14 +198,15 @@ class SubsModelSubsSummary extends JModelList
     	                   $db->setQuery ( $query );
     	                   $db->execute ();
     	                   
-    	                   $num_rows = $db->getNumRows ();
+    	                   $lnum_rows = $db->getNumRows ();
     	                   $lockers = $db->loadObjectList ();
     	                   $comment= $subsyear . ' Subscriptions.';
     	                   
-    	                   for($n=0;$n<$num_rows;$n++){
-    	                      
+    	                   for($n=0;$n<$lnum_rows;$n++){
+    	                       $lockerid = $lockers[$n]->id;
+							   SubsHelper::setCurrentSubsPaid($lockerid,"No","l");  // Reset current subs paid flag
     	                       $lockernum = $lockers[$n]->LockerNumber;
-    	                       $app->enqueueMessage("In lockers for lockernum ".$lockernum);
+    	                       $app->enqueueMessage('In lockers for lockernum '.$lockernum.':'.$lockerid);
     	                       $description = 'Locker '. $lockernum. ' subscription.';
     	                       $nlockersubs++;
     	                       $amount = -1.0 *  SubsHelper::returnSubrate($subsyear,"Locker"); // Get sub rate for the year
@@ -214,6 +215,7 @@ class SubsModelSubsSummary extends JModelList
     	                       $membertype = "l";
     	                       SubsHelper::addFinanceEntry($memid,$substartdate,$creditdebit,$amountnogst,$gst,$amount,$description,$comment,$financetype,$subsyear,$membertype,$fammemid);
     	                       
+							   
     	                   }
     	                   // Set subs paid flag to No unless new balance is positive - i.e. subs paid out of existing funds
     	                   
