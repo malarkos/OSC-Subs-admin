@@ -99,9 +99,9 @@ class SubsModelSubsSummary extends JModelList
     	    $db->setQuery ( $query );
     	    $db->execute ();
     	    
-    	    $num_rows = $db->getNumRows ();
+    	    $memnum_rows = $db->getNumRows ();
     	    $members = $db->loadObjectList ();
-    	    for($i = 0; $i <25;  $i++) { //$num_rows;
+    	    for($i = 0; $i < $memnum_rows;  $i++) { //$num_rows;
     	        $memfirstname = $members [$i]->MemberFirstname;
     	        $memid = $members [$i]->MemberID;
     	        $memsurname = $members [$i]->MemberSurname;
@@ -109,48 +109,114 @@ class SubsModelSubsSummary extends JModelList
     	        $memloa = $members [$i]->MemberLeaveofAbsence;
     	        
     	        
-    	        // add Member sub
-    	        // Add Family member sub & set subs paid flag to no in Family members
-    	        // Add Locker sub
-    	        // Set subs paid flag to No unless new balance is positive - i.e. subs paid out of existing funds
+    	        
     	        if ($memloa == "No") { // Only look at current members
     	            if ($memtype == "Graduate" || $memtype == "Student" || $memtype == "Life" || $memtype == "Hon Life") {
     	                   $app->enqueueMessage('Member:  '.$memid. ' '.$memfirstname . ' ' . $memsurname . ' '.$memtype. ' '.$memloa);
     	                   
-    	                   // Update Grad sub count
-    	                   $ngraduatesubs++;
-    	                   $ntotalsubs++;
-    	                   
     	                   // Add sub to Finance 
-    	                   $today=time();
-    	                   $transactiondate = date("Y-m-d",$today);
+    	                   //$today=time();
+    	                   //$transactiondate = date("Y-m-d",$today);
     	                   $creditdebit = "D";
     	                   $comment= $subsyear . ' Subscriptions.';
     	                   $description = $memtype . ' Member subscription.';
     	                   if ($memtype == "Graduate"  ) {
     	                       $ngraduatesubs++;
     	                       $amount = -1.0 * SubsHelper::returnSubrate($subsyear,$memtype); // Get sub rate for the year
-    	                       SubsHelper::setCurrentSubsPaid($memid,"No");  // Reset current subs paid flag
+    	                       SubsHelper::setCurrentSubsPaid($memid,"No","m");  // Reset current subs paid flag
     	                   }
     	                   else if ( $memtype == "Student" ) {
     	                       $nstudentsubs++;
     	                       $amount = -1.0 * SubsHelper::returnSubrate($subsyear,$memtype); // Get sub rate for the year
-    	                       SubsHelper::setCurrentSubsPaid($memid,"No");  // Reset current subs paid flag
+    	                       SubsHelper::setCurrentSubsPaid($memid,"No","m");  // Reset current subs paid flag
     	                   }
     	                   else if ($memtype == "Life" || $memtype == "Hon Life")
     	                   {
     	                       $nlifehonlifesubs++;
     	                       $amount = 0;  // Life and Hon Life subs = 0
-    	                       SubsHelper::setCurrentSubsPaid($memid,"Yes");  // Life and Hon Life members are paid by default
+    	                       SubsHelper::setCurrentSubsPaid($memid,"Yes","m");  // Life and Hon Life members are paid by default
     	                   }
     	                   $amountnogst = (10*$amount)/11;
     	                   $gst = $amount/11;
     	                   $membertype = "m";
-    	                   
-    	                   
     	                   // Add finance entry
     	                   SubsHelper::addFinanceEntry($memid,$substartdate,$creditdebit,$amountnogst,$gst,$amount,$description,$comment,$financetype,$subsyear,$membertype,$memid);
     	                  
+    	                   // Add Family member sub & set subs paid flag to no in Family members
+    	                   $query = $db->getQuery ( true );
+    	                   $query->select ( '*' );
+    	                   $query->from ( 'familymembers' );
+    	                   $query->where('MemberID = '.$memid);
+    	                   $db->setQuery ( $query );
+    	                   $db->execute ();
+    	                   
+    	                   $num_rows = $db->getNumRows ();
+    	                   $familymembers = $db->loadObjectList ();
+    	                   for($n=0;$n<$num_rows;$n++){
+    	                       $fammemid = $familymembers[$n]->FamilyMemberID;
+    	                       $firstname = $familymembers[$n]->FamilyMemberFirstname;
+    	                       $surname = $familymembers[$n]->FamilyMemberSurname;
+    	                       $fammemtype = $familymembers[$n]->FamilyMembershipType;
+    	                       $comment= $subsyear . ' Subscriptions.';
+    	                       $description = $fammemtype . ' Member subscription.';
+    	                       $app->enqueueMessage("In family members with ". $firstname.$surname);
+    	                       if ($fammemtype == "Spouse"){
+    	                           $nspousesubs++;
+    	                           $amount = -1.0 *  SubsHelper::returnSubrate($subsyear,$fammemtype); // Get sub rate for the year
+    	                           $amountnogst = (10*$amount)/11;
+    	                           $gst = $amount/11;
+    	                           $membertype = "s";
+    	                           SubsHelper::addFinanceEntry($memid,$substartdate,$creditdebit,$amountnogst,$gst,$amount,$description,$comment,$financetype,$subsyear,$membertype,$fammemid);
+    	                           
+    	                       } else 
+    	                       if ($fammemtype == "Child"){
+    	                               $nchildsubs++;
+    	                               $amount = -1.0 *  SubsHelper::returnSubrate($subsyear,$fammemtype); // Get sub rate for the year
+    	                               $amountnogst = (10*$amount)/11;
+    	                               $gst = $amount/11;
+    	                               $membertype = "c";
+    	                               SubsHelper::addFinanceEntry($memid,$substartdate,$creditdebit,$amountnogst,$gst,$amount,$description,$comment,$financetype,$subsyear,$membertype,$fammemid);
+    	                               
+    	                       } else
+    	                       if ($fammemtype == "Buddy"){
+    	                           $nbuddysubs++;
+    	                           
+    	                           $amount = -1.0 *  SubsHelper::returnSubrate($subsyear,"Spouse"); // Buddy same as spouse  TODO create separate buddy rate
+    	                           $amountnogst = (10*$amount)/11;
+    	                           $gst = $amount/11;
+    	                           $membertype = "b";
+    	                           SubsHelper::addFinanceEntry($memid,$substartdate,$creditdebit,$amountnogst,$gst,$amount,$description,$comment,$financetype,$subsyear,$membertype,$fammemid);
+    	                           
+    	                       }
+    	                   }
+    	                       
+    	                   // Add Locker sub
+    	                   $query = $db->getQuery ( true );
+    	                   $query->select ( '*' );
+    	                   $query->from ( 'lockers' );
+    	                   $query->where('MemberID = '.$memid);
+    	                   $db->setQuery ( $query );
+    	                   $db->execute ();
+    	                   
+    	                   $num_rows = $db->getNumRows ();
+    	                   $lockers = $db->loadObjectList ();
+    	                   $comment= $subsyear . ' Subscriptions.';
+    	                   
+    	                   for($n=0;$n<$num_rows;$n++){
+    	                      
+    	                       $lockernum = $lockers[$n]->LockerNumber;
+    	                       $app->enqueueMessage("In lockers for lockernum ".$lockernum);
+    	                       $description = 'Locker '. $lockernum. ' subscription.';
+    	                       $nlockersubs++;
+    	                       $amount = -1.0 *  SubsHelper::returnSubrate($subsyear,"Locker"); // Get sub rate for the year
+    	                       $amountnogst = (10*$amount)/11;
+    	                       $gst = $amount/11;
+    	                       $membertype = "l";
+    	                       SubsHelper::addFinanceEntry($memid,$substartdate,$creditdebit,$amountnogst,$gst,$amount,$description,$comment,$financetype,$subsyear,$membertype,$fammemid);
+    	                       
+    	                   }
+    	                   // Set subs paid flag to No unless new balance is positive - i.e. subs paid out of existing funds
+    	                   
     	                   
     	            }
     	        }

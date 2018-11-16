@@ -137,15 +137,39 @@ class SubsHelper extends JHelperContent
         return;
     }
     
-    public function setCurrentSubsPaid($memid,$setto) 
+    public function setCurrentSubsPaid($memid,$setto,$infotable) 
     {
+        
+        $updatetable = "members"; // default
+        $memberref = "MemberID";
+        
+        if ($infotable == "m") {
+            $updatetable = "members";
+            $memberref = "MemberID";
+        }
+        else if ($infotable == "f") {
+            $updatetable = "familymembers";
+            $memberref = "FamilyMemberID";
+        }
+        else if ($infotable == "l") {
+            $updatetable = "lockers";
+            $memberref = "id";
+        }
+        
         $db = JFactory::getDbo ();
         $sql    = $db->getQuery(true)
-        ->update($db->qn('members'))
+        ->update($db->qn($updatetable))
         ->set($db->qn('CurrentSubsPaid') . ' = ' . $db->q($setto))
-        ->where($db->qn('MemberID') . ' = ' . $db->q($memid));
+        ->where($db->qn($memberref) . ' = ' . $db->q($memid));
         $db->setQuery($sql);
-        $db->execute();
+        try
+        {
+            $db->execute();
+        }
+        catch (Exception $e)
+        {
+            JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+        }
     }
     
     public function checkIfSubsAdded($year)
