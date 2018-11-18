@@ -35,6 +35,11 @@ class SubsHelper extends JHelperContent
             $vName == 'subs'
             );
         JHtmlSidebar::addEntry(
+            JText::_('COM_SUBS_MEMBERPAIDSUBS'),
+            'index.php?option=com_subs&view=finances',
+            $vName == 'finances'
+            );
+        JHtmlSidebar::addEntry(
             JText::_('COM_SUBS_SUBSREFERENCEDATES'),
             'index.php?option=com_subs&view=subsreferencedates',
             $vName == 'subsreferencedates'
