@@ -109,10 +109,13 @@ class SubsModelFinanceEntry extends JModelAdmin
 		
 		$data->MemberID = $memid;
 		$data->CreditDebit = "C";
-		$data->FinanceYear = $subsyear;
+		$data->FinanceYear = (int)$subsyear;  // TODO work out why default not working.
 		$data->FinanceType = "s";
 		$data->MemberType = "m";
 		$data->Description = $subsyear . " Subscriptions payment.";
+		
+		$session = JFactory::getSession();
+		$session->set( 'memid', $memid );
 		
 		return $data;
 	}
