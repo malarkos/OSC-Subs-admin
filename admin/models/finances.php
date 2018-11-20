@@ -70,6 +70,10 @@ class SubsModelFinances extends JModelList
 	 */
 	protected function getListQuery()
 	{
+	    
+	    require_once JPATH_COMPONENT . '/helpers/subs.php';
+	    $subsyear = SubsHelper::returnSubsYear();
+	    
 		// Initialize variables.
 		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true);
@@ -82,6 +86,8 @@ class SubsModelFinances extends JModelList
 		$query->select('f.*,concat(m.MemberFirstname,\' \',m.MemberSurname) as membername');               
                 $query->from('finances AS f');  // use new osclockers table
                 $query->where('f.FinanceType = '.$db->q('s'));
+                $query->where('f.CreditDebit = '.$db->q('C'));
+                $query->where('f.FinanceYear = '.$db->q($subsyear));
                 $query->where('f.MemberID > 0');
                 $query->leftJoin('members AS m ON f.MemberID = m.MemberID'); // Use new member table
                 

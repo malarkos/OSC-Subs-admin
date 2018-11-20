@@ -33,6 +33,21 @@ class SubsModelFinanceEntry extends JModelAdmin
 		return JTable::getInstance($type, $prefix, $config);
 	}
  
+	
+	public function getItem($pk = null) {
+	    $item = parent::getItem($pk);
+	    
+	    $jinput = JFactory::getApplication ()->input;
+	    $memid = $jinput->get ( 'memid', 0 );
+	    
+	    JFactory::getApplication()->enqueueMessage('in GetITem MemID = '.$memid.":");
+	    // Your code
+	    // Example
+	    //$item->newValue = $newValueFromOtherTable;
+	    
+	    return $item;
+	}
+	
 	/**
 	 * Method to get the record form.
 	 *
