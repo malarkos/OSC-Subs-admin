@@ -3,14 +3,14 @@
  
 	<name>COM_SUBS</name>
 	<!-- The following elements are optional and free of formatting constraints -->
-	<creationDate>20 Nov 2018</creationDate>
+	<creationDate>21 Nov 2018</creationDate>
 	<author>Geoff Markley</author>
 	<authorEmail>geoffm@labyrinth.net.au</authorEmail>
 	<authorUrl>http://www.ormondskiclub.com.au</authorUrl>
 	<copyright>Copyright Info</copyright>
 	<license>License Info</license>
 	<!--  The version string is recorded in the components table -->
-	<version>1.3.16</version>
+	<version>1.3.19</version>
 	<!-- The description is optional and defaults to the name -->
 	<description>COM_SUBS_DESCRIPTION</description>
  

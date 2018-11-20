@@ -24,6 +24,33 @@
 			<option value="D">Debit</option>
 
 		</field>
+		<field name="FinanceYear" type="list" label="COM_FINANCES_FINANCEYEAR_LABEL"
+			description="COM_FINANCES_FINANCEYEAR_DESC" class="inputbox" default="2019">
+			<option value="2018">2018</option>
+			<option value="2019">2019</option>
+			<option value="2019">2020</option>
+			<option value="2019">2021</option>
+			<option value="2019">2022</option>
+
+		</field>
+		<field name="FinanceType" type="list" label="COM_FINANCES_FINANCETYPE_LABEL"
+			description="COM_FINANCES_FINANCETYPE_DESC" class="inputbox" default="o">
+			<option value="s">Subscription</option>
+			<option value="b">Booking</option>
+			<option value="o">Other</option>
+		
+
+		</field>
+		<field name="MemberType" type="list" label="COM_FINANCES_MEMBERTYPE_LABEL"
+			description="COM_FINANCES_MEMBERTYPE_DESC" class="inputbox" default="m">
+			<option value="m">Member</option>
+			<option value="f">Spouse</option>
+			<option value="c">Child</option>
+			<option value="b">Buddy</option>
+			<option value="l">Locker</option>
+		
+
+		</field>
 		<field name="Amount" type="text"
 			label="COM_FINANCES_AMOUNT_LABEL" description="COM_FINANCES_AMOUNT_DESC"
 			size="40" class="required validate-numeric" default="" message="Amount must be a number!"/>

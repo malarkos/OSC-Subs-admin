@@ -98,7 +98,36 @@ class SubsModelFinanceEntry extends JModelAdmin
 			$data = $this->getItem();
 		}
  
+		$jinput = JFactory::getApplication ()->input;
+		$memid = $jinput->get ( 'memid', 0 );
+		
+		JFactory::getApplication()->enqueueMessage('in LoadFormData MemID = '.$memid.":");
+		
+		require_once JPATH_COMPONENT . '/helpers/subs.php';
+		$subsyear = SubsHelper::returnSubsYear();
+		JFactory::getApplication()->enqueueMessage('in LoadFormData Subs year = '.$subsyear.":");
+		
+		$data->MemberID = $memid;
+		$data->CreditDebit = "C";
+		$data->FinanceYear = $subsyear;
+		$data->FinanceType = "s";
+		$data->MemberType = "m";
+		$data->Description = $subsyear . " Subscriptions payment.";
+		
 		return $data;
+	}
+	protected function preprocessForm(JForm $form, $data, $group = 'content')
+	{
+	    
+	    //$jinput = JFactory::getApplication ()->input;
+	    //$memid = $jinput->get ( 'memid', 0 );
+	    
+	    //JFactory::getApplication()->enqueueMessage('in preprocessform MemID = '.$memid.":");
+	    
+	    //$form->setField('MemberID', $memid, 'true'); // preset memberID
+	    //$form->setValue('MemberID', null , $memid);
+	    
+	    parent::preprocessForm($form, $data, $group);
 	}
 	
 	protected function prepareTable($table)
