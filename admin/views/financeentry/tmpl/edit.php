@@ -32,8 +32,11 @@ document.formvalidator.setHandler('datetime', function(value, element) {
 	});
 ");
 ?>
-
-
+<?php 
+$referer = JURI::getInstance($_SERVER['HTTP_REFERER']);
+$session = JFactory::getSession();
+$session->set( 'refererURL', $referer );
+?>
 
 <form action="<?php echo JRoute::_('index.php?option=com_subs&layout=edit&FinanceID=' . (int) $this->item->FinanceID); ?>"
     method="post" name="adminForm" id="financeentry-form" class="form-validate">

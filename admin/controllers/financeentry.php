@@ -42,7 +42,8 @@ class SubsControllerFinanceEntry extends JControllerForm
 	    
 	    $session = JFactory::getSession();
 	    $memid = $session->get( 'memid');
-	    JFactory::getApplication()->enqueueMessage('In save MemID = '.$memid);
+	    $refererURL = $session->get( 'refererURL');
+	    JFactory::getApplication()->enqueueMessage('In save MemID = '.$memid.'and refererURL = '.$refererURL.':');
 	    
 		$return = parent::save($key, $urlVar);
 		
@@ -50,9 +51,14 @@ class SubsControllerFinanceEntry extends JControllerForm
 		    $returnurl = 'index.php?option=com_members&view=membersubspayment&memid='.$memid;
 		}
 		else
-		{
-		    $returnurl = 'index.php?option=com_subs&view=finances';
-		}
+		    if  (isset($refererURL))
+		    {
+		        $returnurl= $session->get( 'refererURL');
+		    }
+		      else
+		      {
+		            $returnurl = 'index.php?option=com_subs&view=finances';
+		      }
 		
 		
 		$this->setRedirect($returnurl);
@@ -64,13 +70,19 @@ class SubsControllerFinanceEntry extends JControllerForm
 		
 	    $session = JFactory::getSession();
 	    $memid = $session->get( 'memid');
-		
+	    $refererURL = $session->get( 'refererURL');
+	    JFactory::getApplication()->enqueueMessage('In Cancel MemID = '.$memid.'and refererURL = '.$refererURL.':');
 		
 		$return = parent::cancel($key, $urlVar);
 		
 		if ($memid > 0) {
 		    $returnurl = 'index.php?option=com_members&view=membersubspayment&memid='.$memid;
 		}
+		else
+		    if  (isset($refererURL))
+		    {
+		        $returnurl= $session->get( 'refererURL');
+		    }
 		else
 		{
 		    $returnurl = 'index.php?option=com_subs&view=finances';
