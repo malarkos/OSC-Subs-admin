@@ -91,4 +91,6 @@ class SubsControllerFinanceEntry extends JControllerForm
 		$this->setRedirect($returnurl);
 		return $return;
 	}
+	
+	
 }

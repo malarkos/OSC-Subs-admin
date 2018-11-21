@@ -162,61 +162,6 @@ class SubsModelFinanceEntry extends JModelAdmin
 		//TODO update FinanceID after save
 	}
 	
-	/*
-	 * Function to "delete" entry by setting OldMember ID to MemberID and MemberID to 0.
-	 */
-	
-	function delete() {
-		$db = JFactory::getDbo ();
-		$cids = JRequest::getVar( 'cid', array(0), 'post', 'array' );
-		$row =& $this->getTable();
-		if (count( $cids )) {
-			foreach($cids as $cid) {
-				
-				
-				$query = $db->getQuery ( true );
-				$query->select ( 'MemberID' );
-				$query->from ( 'finances' );
-				$query->where ( 'FinanceID = ' . $cid );
-				
-				$db->setQuery ( $query );
-				$db->execute ();
-				
-				try
-				{
-					$memberid = $db->loadResult ();
-				}
-				catch (Exception $e)
-				{
-					// Render the error message from the Exception object
-					JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-					return false;
-				}
-				// cid = rowid
-				// Load memberid
-				// set old memberid = member id
-				// set memberid = 0
-				$query = $db->getQuery ( true );
-				$fields = array('MemberID =  0',
-		
-						'OldMemberID = '. $memberid
-				);
-				$conditions = array('FinanceID = ' . $cid);
-				$query->update('finances');
-				$query->set($fields);
-				$query->where($conditions);
-				
-				$db->setQuery ( $query );
-				$db->execute ();
-				
-				//$msg = "Removing this cid:".$cid." for this member:".$memberid.":";
-				
-				 $application = JFactory::getApplication();
-				 $application->enqueueMessage($msg);
-				
-			}
-		}
-		return true;
-	}
+
 	
 }

@@ -38,15 +38,74 @@ class SubsControllerFinances extends JControllerAdmin
 		
 	}
 	
+	/*
+	 * Function to "delete" entry by setting OldMember ID to MemberID and MemberID to 0.
+	 */
+	
 	public function delete() {
-		/*$application = JFactory::getApplication();
-		 $application->enqueueMessage('In remove.');*/
-		$model = $this->getModel('FinanceEntry');
-		if ($model->delete())
-		{
-			$returnurl = 'index.php?option=com_subs';
-			
-			$this->setRedirect($returnurl);
-		}
+	    $db = JFactory::getDbo ();
+	    $cids = JRequest::getVar( 'cid', array(0), 'post', 'array' );
+	    //$row =& $this->getTable();
+	    if (count( $cids )) {
+	        foreach($cids as $cid) {
+	            
+	            $msg = "Removing this cid:".$cid;
+	            
+	            $application = JFactory::getApplication();
+	            $application->enqueueMessage($msg);
+	            
+	            $query = $db->getQuery ( true );
+	            $query->select ( 'MemberID' );
+	            $query->from ( 'finances' );
+	            $query->where ( 'FinanceID = ' . $cid );
+	            
+	            $db->setQuery ( $query );
+	            
+	            
+	            try
+	            {
+	                $db->execute ();
+	                $memberid = $db->loadResult ();
+	            }
+	            catch (Exception $e)
+	            {
+	                // Render the error message from the Exception object
+	                JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+	                return false;
+	            }
+	            // cid = rowid
+	            // Load memberid
+	            // set old memberid = member id
+	            // set memberid = 0
+	            $query = $db->getQuery ( true );
+	            $fields = array('MemberID =  0',
+	                
+	                'OldMemberID = '. $memberid
+	            );
+	            $conditions = array('FinanceID = ' . $cid);
+	            $query->update('finances');
+	            $query->set($fields);
+	            $query->where($conditions);
+	            
+	            $db->setQuery ( $query );
+	            try
+	            {
+	                $db->execute ();
+	                
+	            }
+	            catch (Exception $e)
+	            {
+	                // Render the error message from the Exception object
+	                JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+	                return false;
+	            }
+	            
+	            
+	            
+	        }
+	    }
+	    $returnurl = 'index.php?option=com_subs&view=finances';
+	    $this->setRedirect($returnurl);
+	    return $return;
 	}
 }
