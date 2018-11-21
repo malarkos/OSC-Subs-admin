@@ -45,7 +45,15 @@ class SubsControllerFinanceEntry extends JControllerForm
 	    JFactory::getApplication()->enqueueMessage('In save MemID = '.$memid);
 	    
 		$return = parent::save($key, $urlVar);
-		$returnurl = 'index.php?option=com_members&view=membersubspayment&memid='.$memid;
+		
+		if ($memid > 0) {
+		    $returnurl = 'index.php?option=com_members&view=membersubspayment&memid='.$memid;
+		}
+		else
+		{
+		    $returnurl = 'index.php?option=com_subs&view=finances';
+		}
+		
 		
 		$this->setRedirect($returnurl);
 		return $return;
@@ -60,7 +68,13 @@ class SubsControllerFinanceEntry extends JControllerForm
 		
 		$return = parent::cancel($key, $urlVar);
 		
-		$returnurl = 'index.php?option=com_members&view=membersubspayment&memid='.$memid;
+		if ($memid > 0) {
+		    $returnurl = 'index.php?option=com_members&view=membersubspayment&memid='.$memid;
+		}
+		else
+		{
+		    $returnurl = 'index.php?option=com_subs&view=finances';
+		}
 		
 		$this->setRedirect($returnurl);
 		return $return;
