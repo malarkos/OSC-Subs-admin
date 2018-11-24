@@ -70,7 +70,7 @@ class SubsModelSubsSummary extends JModelList
 	    {
     	    // Function to add all subs
     	    $app = JFactory::getApplication ();
-    	    $app->enqueueMessage('In Add All Subs');
+    	    //$app->enqueueMessage('In Add All Subs');
     	    
     	    // get database object
     	    $db = JFactory::getDbo ();
@@ -112,7 +112,7 @@ class SubsModelSubsSummary extends JModelList
     	        
     	        if ($memloa == "No") { // Only look at current members
     	            if ($memtype == "Graduate" || $memtype == "Student" || $memtype == "Life" || $memtype == "Hon Life") {
-    	                   $app->enqueueMessage('Member:  '.$memid. ' '.$memfirstname . ' ' . $memsurname . ' '.$memtype. ' '.$memloa);
+    	                   //$app->enqueueMessage('Member:  '.$memid. ' '.$memfirstname . ' ' . $memsurname . ' '.$memtype. ' '.$memloa);
     	                   
     	                   // Add sub to Finance 
     	                   //$today=time();
@@ -159,7 +159,7 @@ class SubsModelSubsSummary extends JModelList
     	                       $fammemtype = $familymembers[$n]->FamilyMembershipType;
     	                       $comment= $subsyear . ' Subscriptions.';
     	                       $description = $fammemtype . ' Member subscription.';
-    	                       $app->enqueueMessage("In family members with ". $firstname.$surname);
+    	                       //$app->enqueueMessage("In family members with ". $firstname.$surname);
     	                       if ($fammemtype == "Spouse"){
     	                           $nspousesubs++;
     	                           $amount = -1.0 *  SubsHelper::returnSubrate($subsyear,$fammemtype); // Get sub rate for the year
@@ -206,7 +206,7 @@ class SubsModelSubsSummary extends JModelList
     	                       $lockerid = $lockers[$n]->id;
 							   SubsHelper::setCurrentSubsPaid($lockerid,"No","l");  // Reset current subs paid flag
     	                       $lockernum = $lockers[$n]->LockerNumber;
-    	                       $app->enqueueMessage('In lockers for lockernum '.$lockernum.':'.$lockerid);
+    	                       //$app->enqueueMessage('In lockers for lockernum '.$lockernum.':'.$lockerid);
     	                       $description = 'Locker '. $lockernum. ' subscription.';
     	                       $nlockersubs++;
     	                       $amount = -1.0 *  SubsHelper::returnSubrate($subsyear,"Locker"); // Get sub rate for the year
@@ -241,7 +241,7 @@ class SubsModelSubsSummary extends JModelList
 	{
 	    // Function to add all subs
 	    $app = JFactory::getApplication ();
-	    $app->enqueueMessage('In Remove All Subs');
+	    //$app->enqueueMessage('In Remove All Subs');
 	    require_once JPATH_COMPONENT . '/helpers/subs.php';
 	    $subsyear = SubsHelper::returnSubsYear();
 	    // Set flag to say subs have been removed
@@ -258,16 +258,16 @@ class SubsModelSubsSummary extends JModelList
 	    $query->where('FinanceYear = '. $db->q($subsyear));
 	    $query->where('CreditDebit = '.$db->q("D"));
 	    $db->setQuery ( $query );
-	    $app->enqueueMessage('Query = '.$query);
+	    //$app->enqueueMessage('Query = '.$query);
 	    $db->execute ();
 	    
 	    $num_rows = $db->getNumRows ();
-	    $app->enqueueMessage('Numrows = '.$num_rows);
+	    //$app->enqueueMessage('Numrows = '.$num_rows);
 	    $finances = $db->loadObjectList ();
 	    for($i = 0; $i < $num_rows;  $i++) 
 	    { //Cycle through each line
 	        $financeid = $finances[$i]->FinanceID;
-	        $app->enqueueMessage('FinanceID = '.$financeid);
+	        //$app->enqueueMessage('FinanceID = '.$financeid);
 	        SubsHelper::deleteFinanceEntry($financeid,0);
 	    }
 	    // update Subsummary

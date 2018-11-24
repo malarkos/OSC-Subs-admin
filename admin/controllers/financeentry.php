@@ -43,7 +43,7 @@ class SubsControllerFinanceEntry extends JControllerForm
 	    $session = JFactory::getSession();
 	    $memid = $session->get( 'memid');
 	    $refererURL = $session->get( 'refererURL');
-	    JFactory::getApplication()->enqueueMessage('In save MemID = '.$memid.'and refererURL = '.$refererURL.':');
+	    //JFactory::getApplication()->enqueueMessage('In save MemID = '.$memid.'and refererURL = '.$refererURL.':');
 	    
 		$return = parent::save($key, $urlVar);
 		
@@ -71,7 +71,7 @@ class SubsControllerFinanceEntry extends JControllerForm
 	    $session = JFactory::getSession();
 	    $memid = $session->get( 'memid');
 	    $refererURL = $session->get( 'refererURL');
-	    JFactory::getApplication()->enqueueMessage('In Cancel MemID = '.$memid.'and refererURL = '.$refererURL.':');
+	    //JFactory::getApplication()->enqueueMessage('In Cancel MemID = '.$memid.'and refererURL = '.$refererURL.':');
 		
 		$return = parent::cancel($key, $urlVar);
 		

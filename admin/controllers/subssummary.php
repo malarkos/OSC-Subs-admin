@@ -37,7 +37,7 @@ class SubsControllerSubsSummary extends JControllerAdmin
 	public function AddSubs ()
 	{
 	    $app = JFactory::getApplication ();
-	    $app->enqueueMessage('In Add Subs');
+	    //$app->enqueueMessage('In Add Subs');
 	    
 	    $model = JModelLegacy::getInstance('SubsSummary', 'SubsModel');
 	    
@@ -56,7 +56,7 @@ class SubsControllerSubsSummary extends JControllerAdmin
 	    
 	    
 	    $app = JFactory::getApplication ();
-	    $app->enqueueMessage('In Remove Subs');
+	   // $app->enqueueMessage('In Remove Subs');
 	    
 	    $model = JModelLegacy::getInstance('SubsSummary', 'SubsModel');
 	    

@@ -52,7 +52,7 @@ class SubsControllerFinances extends JControllerAdmin
 	            $msg = "Removing this cid:".$cid;
 	            
 	            $application = JFactory::getApplication();
-	            $application->enqueueMessage($msg);
+	            //$application->enqueueMessage($msg);
 	            
 	            $query = $db->getQuery ( true );
 	            $query->select ( 'MemberID' );

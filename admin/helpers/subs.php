@@ -19,7 +19,7 @@ class SubsHelper extends JHelperContent
             $vName == 'subssummary'
         );
         
-        JHtmlSidebar::addEntry(
+        /*JHtmlSidebar::addEntry(
             JText::_('COM_SUBS_RESETSUBS'),
             'index.php?option=com_subs&view=resetsubs',
             $vName == 'resetsubs'
@@ -28,7 +28,7 @@ class SubsHelper extends JHelperContent
             JText::_('COM_SUBS_ADDSUBS'),
             'index.php?option=com_subs&view=addsubs',
             $vName == 'addsubs'
-            );
+            );*/
         JHtmlSidebar::addEntry(
             JText::_('COM_SUBS_MEMBERSUBS'),
             'index.php?option=com_subs&view=subs',
@@ -39,11 +39,11 @@ class SubsHelper extends JHelperContent
             'index.php?option=com_subs&view=finances',
             $vName == 'finances'
             );
-        JHtmlSidebar::addEntry(
+        /*JHtmlSidebar::addEntry(
             JText::_('COM_SUBS_SUBSREFERENCEDATES'),
             'index.php?option=com_subs&view=subsreferencedates',
             $vName == 'subsreferencedates'
-            );
+            );*/
     }
     
     public function returnSubsYear()
@@ -128,10 +128,10 @@ class SubsHelper extends JHelperContent
         $query->values(implode(',', $values));
         $db->setQuery($query);
         
-        $app->enqueueMessage('Query = '.$query);
+        //$app->enqueueMessage('Query = '.$query);
         try
         {
-            $app->enqueueMessage('In try ');
+            //$app->enqueueMessage('In try ');
             $db->execute();
         }
         catch (Exception $e)
@@ -169,7 +169,7 @@ class SubsHelper extends JHelperContent
         $sql->set($db->qn('CurrentSubsPaid') . ' = ' . $db->q($setto));
         $sql->where($db->qn($memberref) . ' = ' . $db->q($memid));
         $db->setQuery($sql);
-        $app->enqueueMessage('Set subs paid query = '.$sql);
+        //$app->enqueueMessage('Set subs paid query = '.$sql);
         try
         {
             $db->execute();
@@ -223,7 +223,7 @@ class SubsHelper extends JHelperContent
         
         try
         {
-            $app->enqueueMessage('In try ');
+            //$app->enqueueMessage('In try ');
             $db->execute();
         }
         catch (Exception $e)
@@ -249,7 +249,7 @@ class SubsHelper extends JHelperContent
         
         try
         {
-            $app->enqueueMessage('In deleteFinanceEntry ');
+            //$app->enqueueMessage('In deleteFinanceEntry ');
             $db->execute();
         }
         catch (Exception $e)
@@ -308,10 +308,10 @@ class SubsHelper extends JHelperContent
             $query->values(implode(',', $values));
             $db->setQuery($query);
             
-            $app->enqueueMessage('Query = '.$query);
+            //$app->enqueueMessage('Query = '.$query);
             try
             {
-                $app->enqueueMessage('In try ');
+                //$app->enqueueMessage('In try ');
                 $db->execute();
             }
             catch (Exception $e)
@@ -342,7 +342,7 @@ class SubsHelper extends JHelperContent
             $db->setQuery ( $query );
             try
             {
-                $app->enqueueMessage('In try ');
+                //$app->enqueueMessage('In try ');
                 $db->execute();
             }
             catch (Exception $e)

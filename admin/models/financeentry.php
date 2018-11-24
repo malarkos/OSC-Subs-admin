@@ -40,7 +40,7 @@ class SubsModelFinanceEntry extends JModelAdmin
 	    $jinput = JFactory::getApplication ()->input;
 	    $memid = $jinput->get ( 'memid', 0 );
 	    
-	    JFactory::getApplication()->enqueueMessage('in GetITem MemID = '.$memid.":");
+	    //JFactory::getApplication()->enqueueMessage('in GetITem MemID = '.$memid.":");
 	    // Your code
 	    // Example
 	    //$item->newValue = $newValueFromOtherTable;
@@ -101,12 +101,12 @@ class SubsModelFinanceEntry extends JModelAdmin
 		$jinput = JFactory::getApplication ()->input;
 		$memid = $jinput->get ( 'memid', 0 );
 		
-		JFactory::getApplication()->enqueueMessage('in LoadFormData MemID = '.$memid.":");
+		//JFactory::getApplication()->enqueueMessage('in LoadFormData MemID = '.$memid.":");
 		
 		if ($memid > 0) {
     		require_once JPATH_COMPONENT . '/helpers/subs.php';
     		$subsyear = SubsHelper::returnSubsYear();
-    		JFactory::getApplication()->enqueueMessage('in LoadFormData Subs year = '.$subsyear.":");
+    		//JFactory::getApplication()->enqueueMessage('in LoadFormData Subs year = '.$subsyear.":");
     		
     		$data->MemberID = $memid;
     		$data->CreditDebit = "C";
