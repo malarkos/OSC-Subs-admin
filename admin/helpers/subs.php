@@ -44,7 +44,7 @@ class SubsHelper extends JHelperContent
             'index.php?option=com_subs&view=subsreferencedates',
             $vName == 'subsreferencedates'
             );*/
-    }
+    } // function
     
     public function returnSubsYear()
     {
@@ -74,16 +74,30 @@ class SubsHelper extends JHelperContent
     
     public function returnSubrate($year,$memtype)
     {
+        $app = JFactory::getApplication ();
+        $app->enqueueMessage('memtype =  '.$memtype.':');
+        
         $db = JFactory::getDbo ();
         $query = $db->getQuery ( true );
         $query->select ( $memtype);
         $query->from ( 'oscmemberrates' );
         $query->where ( 'Year =  '. $year  );  // Data only in the first row
         $db->setQuery ( $query );
-        $subsstartdate = $db->loadResult();
+        try
+        {
+            //$app->enqueueMessage('In try ');
+            $subsstartdate = $db->loadResult();
+        }
+        catch (Exception $e)
+        {
+            
+            JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+        }
+       
         
         return ($subsstartdate);
     }
+    
     public function addFinanceEntry($memid,$substartdate,$creditdebit,$amountnogst,$gst,$amount,$description,$comment,$financetype,$subsyear,$membertype,$memberrefid)
     {
         // Get handle to Application
@@ -355,6 +369,84 @@ class SubsHelper extends JHelperContent
         // if no, insert
         // if yes, update values
         return;
+    } // function
+    
+    public function checkIfSubPaid($memtype,$memid)
+    {
+        // function to check if an individual sub has been paid.
+        
+        $subspaid = "Not paid"; // default value
+        
+        $db = JFactory::getDbo ();
+        $query = $db->getQuery ( true );
+        $query->select ( 'CurrentSubsPaid');
+        if ($memtype == 'm')
+        {
+            $query->from ( 'members' );
+            $query->where ( 'MemberID =  '. $memid  );  // Data only in the first row
+            $db->setQuery ( $query );
+            $subspaid = $db->loadResult();
+            return $subspaid;
+        }
+        else 
+            if ($memtype == 'f') 
+            {
+                $query->from ( 'familymembers' );
+                $query->where ( 'FamilyMemberID =  '. $memid  );  // Data only in the first row
+                $db->setQuery ( $query );
+                $subspaid = $db->loadResult();
+                return $subspaid;
+            }
+            else 
+            if ($memtype == 'l')
+            {
+                $query->from ( 'lockers' );
+                $query->where ( 'id =  '. $memid  );  // Data only in the first row
+                $db->setQuery ( $query );
+                $subspaid = $db->loadResult();
+                return $subspaid;
+            }
+            else 
+            {
+                return $subpaid; // default entry
+            }
+            
+        return $subspaid;
+        
+        
+    } // function
+    
+    public function returnMemberType($memtype, $memid)
+    {
+        // Function to take in a member type of m or f and return detailed member type
+        
+        $detailedmembertype = "";
+        
+        JFactory::getApplication()->enqueueMessage("Memtye and Memid = ".$memtype.':'.$memid.':');
+        
+        $db = JFactory::getDbo ();
+        $query = $db->getQuery ( true );
+        if ($memtype == 'm')
+        {
+            $query->select ( 'MemberType');
+            $query->from ( 'members' );
+            $query->where ( 'MemberID =  '. $memid  );  // Data only in the first row
+            $db->setQuery ( $query );
+            $detailedmembertype = $db->loadResult();
+            return $detailedmembertype;
+        }
+        else
+            if ($memtype == 'f')
+            {
+                $query->select ( 'FamilyMembershipType');
+                $query->from ( 'familymembers' );
+                $query->where ( 'FamilyMemberID =  '. $memid  );  // Data only in the first row
+                $db->setQuery ( $query );
+                $detailedmembertype = $db->loadResult();
+                return $detailedmembertype;
+            }
+        
+        return $detailedmembertype;
     }
     
 }
