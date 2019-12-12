@@ -111,7 +111,7 @@ foreach ( $this->items as $i => $row ) :
 						</td>
 						<td>
 							<table class="table table-striped table-hover">
-							<tr><th>Sub billed</th><th>Amount</th></tr>
+							
 							<?php foreach ($this->subsbilled as $i => $financerow) :?>
 									<?php if ($financerow->MemberID == $row->MemberID ) {
 									    echo "<tr><td>";
