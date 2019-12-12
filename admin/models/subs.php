@@ -98,7 +98,7 @@ class SubsModelSubs extends JModelList
 	    $db->setQuery ( $query );
 	    $db->execute ();
 	    $num_rows = $db->getNumRows();
-	    JFactory::getApplication()->enqueueMessage(JText::_('Number of rows = '.$num_rows));
+	    //JFactory::getApplication()->enqueueMessage(JText::_('Number of rows = '.$num_rows));
 	    $subsbilled = $db->loadObjectList ();
 	    
 	    return $subsbilled;
