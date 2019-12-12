@@ -33,13 +33,13 @@ $listDirn = $this->escape ( $this->filter_order_Dir );
 				<th width="5%">
 				<?php echo JText::_('COM_SUBS_TITLE') ;?>
 				</th>
-				<th width="15%">
+				<th width="5%">
 				<?php echo JHtml::_('grid.sort', 'COM_SUBS_FIRSTNAME', 'MemberFirstname', $listDirn, $listOrder); ?>
 				</th>
-				<th width="20%">
+				<th width="5%">
 				<?php echo JHtml::_('grid.sort', 'COM_SUBS_SURSTNAME', 'MemberSurname', $listDirn, $listOrder); ?>
 				</th>
-				<th width="15%">
+				<th width="5%">
 				<?php echo JHtml::_('grid.sort', 'COM_SUBS_MEMBERTYPE', 'MemberType', $listDirn, $listOrder); ?>
 				</th>
 				<th width="5%">
@@ -110,7 +110,21 @@ foreach ( $this->items as $i => $row ) :
 								<?php echo $row->SummerUsageOnly; ?>
 						</td>
 						<td>
-							Subs billed
+							<table class="table table-striped table-hover">
+							<tr><th>Sub billed</th><th>Amount</th></tr>
+							<?php foreach ($this->subsbilled as $i => $financerow) :?>
+									<?php if ($financerow->MemberID == $row->MemberID ) {
+									    echo "<tr><td>";
+									    echo $financerow->Description;
+									    echo "</td><td>";
+									    echo $financerow->Amount;
+									    echo "</td></tr>";
+									}
+									    
+									 ?>
+							<?php endforeach; ?>
+							
+							</table>
 						</td>
 				<td>
 					<a href="<?php echo $subslink; ?>"> Subs Notice </a></td>

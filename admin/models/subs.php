@@ -92,10 +92,13 @@ class SubsModelSubs extends JModelList
 	    
 	    $query->select ( '*' );
 	    $query->from ( 'finances' );
-	    $query->where ( 'TransactionDate = ' . $substartdate );
+	    //$query->where ( 'TransactionDate = ' . $substartdate );
+	    $query->where ( 'TransactionDate = \'2019-12-01\'' );
 	    
 	    $db->setQuery ( $query );
 	    $db->execute ();
+	    $num_rows = $db->getNumRows();
+	    JFactory::getApplication()->enqueueMessage(JText::_('Number of rows = '.$num_rows));
 	    $subsbilled = $db->loadObjectList ();
 	    
 	    return $subsbilled;
