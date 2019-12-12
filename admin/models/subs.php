@@ -71,4 +71,14 @@ class SubsModelSubs extends JModelList
 	    $limit = 2000;  // set list limit
 	    
 	}
+	
+	/*public function getSubsBilled()
+	{
+	    // Function to return current subs year
+	    require_once JPATH_COMPONENT . '/helpers/subs.php';
+	    
+	    $subsbilled = SubsHelper::returnSubsBilled();
+	    
+	    return $subsbilled;
+	}*/
 }

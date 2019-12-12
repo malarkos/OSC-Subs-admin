@@ -48,6 +48,9 @@ $listDirn = $this->escape ( $this->filter_order_Dir );
 				<th width="5%">
 					<?php echo JText::_('COM_SUBS_MEMBER_SUMMER_LABEL') ;?>
 				</th>
+				<th width="15%">
+					<?php echo JText::_('COM_SUBS_SUBS_BILLED') ;?>
+				</th>
 				
 				</th>
 				<th width="5%">
@@ -56,6 +59,8 @@ $listDirn = $this->escape ( $this->filter_order_Dir );
 				<th width="5%">
 				<?php echo JText::_('COM_UPDATE_SUBS') ;?>
 				</th>
+				
+				
 			</tr>
 		</thead>
 		<tfoot>
@@ -103,6 +108,9 @@ foreach ( $this->items as $i => $row ) :
 						</td>
 						<td>
 								<?php echo $row->SummerUsageOnly; ?>
+						</td>
+						<td>
+							Subs billed
 						</td>
 				<td>
 					<a href="<?php echo $subslink; ?>"> Subs Notice </a></td>
