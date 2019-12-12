@@ -39,7 +39,7 @@ class SubsModelSubs extends JModelList
  
 		// Create the base select statement.
 		$query->select('*');
-        $query->from('oscmembers');
+        $query->from('members');
         $query->where('MemberType in (\'Graduate\',\'Student\',\'Life\',\'Hon Life\')');
         $query->where('MemberLeaveofAbsence = \'No\'');
                 
@@ -57,5 +57,18 @@ class SubsModelSubs extends JModelList
  
 		$query->order($db->escape($orderCol) . ' ' . $db->escape($orderDirn));*/
 		return $query;
+	}
+	
+	//override default list
+	protected function populateState($ordering = null, $direction = null)
+	{
+	    // Initialise variables.
+	    $app = JFactory::getApplication();
+	    
+	    // List state information
+	    $limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->get('list_limit'));
+	    
+	    $limit = 2000;  // set list limit
+	    
 	}
 }

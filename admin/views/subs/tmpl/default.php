@@ -74,7 +74,7 @@ foreach ( $this->items as $i => $row ) :
  
 					<tr>
 				<td align="center">
-							<?php echo $row->id; ?>
+							<?php echo $row->MemberID; ?>
 						</td>
 				<td>
 							<?php echo JHtml::_('grid.id', $i, $row->id); ?>
