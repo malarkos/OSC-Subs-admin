@@ -72,13 +72,32 @@ class SubsModelSubs extends JModelList
 	    
 	}
 	
-	/*public function getSubsBilled()
+	public function getSubsBilled()
 	{
 	    // Function to return current subs year
-	    require_once JPATH_COMPONENT . '/helpers/subs.php';
+	    $subsbilled = array();
 	    
-	    $subsbilled = SubsHelper::returnSubsBilled();
+	    require_once JPATH_COMPONENT . '/helpers/subs.php';
+	    // Get year for subs
+	    $subsyear = SubsHelper::returnSubsYear();
+	    // Get date of subs start
+	    $substartdate = SubsHelper::returnSubsStartDate($subsyear);
+	    
+	    
+	    // Initialize variables.
+	    $db = JFactory::getDbo ();
+	    $query = $db->getQuery ( true );
+	    
+	    // Need to loop through all finance entries with date = substartdate
+	    
+	    $query->select ( '*' );
+	    $query->from ( 'finances' );
+	    $query->where ( 'TransactionDate = ' . $substartdate );
+	    
+	    $db->setQuery ( $query );
+	    $db->execute ();
+	    $subsbilled = $db->loadObjectList ();
 	    
 	    return $subsbilled;
-	}*/
+	}
 }
