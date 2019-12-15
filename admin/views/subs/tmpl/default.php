@@ -42,6 +42,14 @@ $listDirn = $this->escape ( $this->filter_order_Dir );
 				<th width="5%">
 				<?php echo JHtml::_('grid.sort', 'COM_SUBS_MEMBERTYPE', 'MemberType', $listDirn, $listOrder); ?>
 				</th>
+				
+				
+				<th width="5%">
+				<?php echo JText::_('COM_SUBS_MEMBER_DOB_LABEL') ;?>
+				</th>
+				<th width="5%">
+				<?php echo JText::_('COM_SUBS_MEMBER_AGE') ;?>
+				</th>
 				<th width="5%">
 				<?php echo JText::_('COM_SUBS_LOA') ;?>
 				</th>
@@ -103,7 +111,25 @@ foreach ( $this->items as $i => $row ) :
 				<td>
 								<?php echo $row->MemberType; ?>
 						</td>
-				<td>
+				
+				
+						<td>
+								<?php echo $row->MemberBirthDate; ?>
+						</td>
+						<td>
+								<?php 
+								    $dateString=$row->MemberBirthDate;;
+								    $years = round((time()-strtotime($dateString))/(3600*24*365.25));
+								    if ($years > 100) $years = '-'; // if no date of birth, defaults to 2020
+								    if ($years > 69) {
+								        echo "<b>".$years."</b>";
+								    }
+								    else {
+								        echo $years;
+								    }
+								?>
+						</td>
+						<td>
 								<?php echo $row->MemberLeaveofAbsence; ?>
 						</td>
 						<td>
