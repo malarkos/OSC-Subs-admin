@@ -78,7 +78,11 @@ class SubsControllerSubs extends JControllerAdmin
         	    // Create message body
         	    $body = "Dear ".$memfirstname.'<p><p>';
         	    
-        	    $body .= "Please find attached your 2020 Ormond Ski Club Subscription notice.<p><p>Subs are due 29th Feb 2020";
+        	    $body .= "Please find attached your 2020 Ormond Ski Club Subscription notice. Note: Subs are due <b>29th Feb 2020</b><p><p>";
+        	    
+        	    $body .= "If you have any questions about your membership, please contact the Membership officer at general@ormondskiclub.com.au.<p><p>";
+        	    
+        	    $body .= "<p>Rohan Hodges<p>Ormond Ski Club Membership Officer";
         	    
         	    $mailer->setSubject(JText::_('COM_SUBS_EMAIL_SUBJECT'));
         	    $mailer->setBody($body);
