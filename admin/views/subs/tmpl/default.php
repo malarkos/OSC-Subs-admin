@@ -24,13 +24,13 @@ $listDirn = $this->escape ( $this->filter_order_Dir );
 	<table class="table table-striped table-hover">
 		<thead>
 			<tr>
-				<th width="5%">
+				<th width="2%">
 				<?php echo JHtml::_('grid.sort', 'COM_SUBS_ID', 'id', $listDirn, $listOrder); ?>
 				</th>
 				<th width="2%">
 				<?php echo JHtml::_('grid.checkall'); ?>
 				</th>
-				<th width="5%">
+				<th width="2%">
 				<?php echo JText::_('COM_SUBS_TITLE') ;?>
 				</th>
 				<th width="5%">
@@ -61,6 +61,13 @@ $listDirn = $this->escape ( $this->filter_order_Dir );
 				</th>
 				
 				</th>
+				<th width="5%">
+				<?php echo JText::_('COM_SUBS_SEND_EMAIL') ;?>
+				</th>
+				<th width="5%">
+				<?php echo JText::_('COM_SUBS_EMAIL_SENT') ;?>
+				</th>
+				
 				<th width="5%">
 				<?php echo JText::_('COM_SUBS_SUBS') ;?>
 				</th>
@@ -151,6 +158,12 @@ foreach ( $this->items as $i => $row ) :
 							<?php endforeach; ?>
 							
 							</table>
+						</td>
+						<td>
+							Email subs
+						</td>
+						<td>
+							Subs emailed on
 						</td>
 				<td>
 					<a href="<?php echo $subslink; ?>"> Subs Notice </a></td>
