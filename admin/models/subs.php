@@ -106,4 +106,6 @@ class SubsModelSubs extends JModelList
 	    
 	    return $subsbilled;
 	}
+	
+	// Create function to return list of all subs emails sent
 }

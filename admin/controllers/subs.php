@@ -41,13 +41,16 @@ class SubsControllerSubs extends JControllerAdmin
 	    //JFactory::getApplication()->enqueueMessage('$jinput  = '.$jinput.":");
 	    $memid = $jinput->get('memid','','text'); 
 	    $mememail = $jinput->get('memberemail','','text');
+	    $memfirstname = $jinput->get('memberfirstname','','text');
+	    $memsurname = $jinput->get('membersurname','','text');
 	    // Check we've got the right member
-	    JFactory::getApplication()->enqueueMessage('Send member subs with member id'.$memid.'and email'.$mememail);
+	    //JFactory::getApplication()->enqueueMessage('Send member subs with member id'.$memid.'and email'.$mememail.' for '.$memfirstname.' '.$memsurname);
 	    
 	    // Email member
 	    // Set up mail
 	    // Get mailer object
 	    $mailer = JFactory::getMailer();
+	    $mailer->isHTML();
 	    
 	    // Set Sender
 	    $config = JFactory::getConfig();
@@ -60,22 +63,58 @@ class SubsControllerSubs extends JControllerAdmin
 	    
 	    // Set recipient
 	    $recipient = $mememail; //'geoffm@labyrinth.net.au';
-	    if ( strlen($recipient) > 0 )
-	    {
-    	    $mailer->addRecipient($recipient);
+	    
+	    // Ensure email is valid
+	    if (!filter_var($recipient,FILTER_VALIDATE_EMAIL)) {
+	        
+	    }
+	    else {
+	        
     	    
-    	    // Create message body
-    	    $body = "this is the mail message";
-    	    
-    	    $mailer->setSubject(JText::_('COM_SUBS_EMAIL_SUBJECT'));
-    	    $mailer->setBody($body);
-    	    
-    	    // Send the message
-    	    $send = $mailer->Send();
-    	    if ( $send !== true ) {
-    	        echo 'Error sending email: ';
-    	    } else {
-    	        echo 'Mail sent';
+    	    if ( strlen($recipient) > 0 )
+    	    {
+        	    $mailer->addRecipient($recipient);
+        	    
+        	    // Create message body
+        	    $body = "Dear ".$memfirstname.'<p><p>';
+        	    
+        	    $body .= "Please find attached your 2020 Ormond Ski Club Subscription notice.<p><p>Subs are due 29th Feb 2020";
+        	    
+        	    $mailer->setSubject(JText::_('COM_SUBS_EMAIL_SUBJECT'));
+        	    $mailer->setBody($body);
+        	    
+        	    
+        	    $subsfile = JPATH_COMPONENT . '/subsfiles/'.$memid.'.pdf';
+        	    JFactory::getApplication()->enqueueMessage("subs file".$subsfile);
+        	    
+        	    if ( !file_exists($subsfile) || !(is_file($subsfile) || is_link($subsfile)))
+        	    {
+        	        JFactory::getApplication()->enqueueMessage( "The file does not exist, or it's not a file; no email sent");
+        	        
+        	        return false;
+        	    }
+        	    
+        	    if ( !is_readable($subsfile))
+        	    {
+        	        JFactory::getApplication()->enqueueMessage("The file is not readable; no email sent");
+        	        
+        	        return false;
+        	    }
+        	    
+        	    // Add attachment
+        	    $mailer->addAttachment($subsfile);
+        	    // Send the message
+        	    $send = $mailer->Send();
+        	    if ( $send !== true ) {
+        	        JFactory::getApplication()->enqueueMessage('Error sending email: ');
+        	        
+        	    } else {
+        	        JFactory::getApplication()->enqueueMessage('Mail sent');
+        	        
+        	        // Function to add entry to show subs sent
+        	    }
+        	    
+        	    
     	    }
 	    }
 	    

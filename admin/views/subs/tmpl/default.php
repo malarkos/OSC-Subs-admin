@@ -93,7 +93,7 @@ foreach ( $this->items as $i => $row ) :
 					$link = JRoute::_ ( 'index.php?option=com_members&task=member.edit&id=' . $row->id );
 					$subslink = JRoute::_ ( 'index.php?option=com_members&view=membersubsnotice&memid=' . $row->MemberID . '&tmpl=component' );
 					$updatesubslink = JRoute::_ ( 'index.php?option=com_subs&view=sub&memid=' . $row->MemberID );
-					$emailmembersubslink = JRoute::_ ( 'index.php?option=com_subs&task=subs.SendMemberSubviaEmail&memid=' . $row->MemberID .'&memberemail='.$row->MemberEmail);
+					$emailmembersubslink = JRoute::_ ( 'index.php?option=com_subs&task=subs.SendMemberSubviaEmail&memid=' . $row->MemberID .'&memberemail='.$row->MemberEmail.'&memberfirstname='.$row->MemberFirstname.'&membersurname='.$row->MemberSurname);
 					// $subslink = JRoute::_('index.php?option=com_members&view=membersubsnotice&memid=' . $row->MemberID.'&tmpl=component&print=1&page=');
 					?>
  
