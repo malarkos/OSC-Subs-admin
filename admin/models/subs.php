@@ -41,6 +41,7 @@ class SubsModelSubs extends JModelList
 		$query->select('*');
         $query->from('members');
         $query->where('MemberType in (\'Graduate\',\'Student\',\'Life\',\'Hon Life\')');
+        $query->where('MemberID = \'351\'');
         //$query->orderby('MemberBirthDate');
         
         //$query->where('MemberLeaveofAbsence = \'No\'');
