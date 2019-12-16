@@ -40,8 +40,42 @@ class SubsControllerSubs extends JControllerAdmin
 	    $jinput = $app->input;
 	    //JFactory::getApplication()->enqueueMessage('$jinput  = '.$jinput.":");
 	    $memid = $jinput->get('memid','','text'); 
-	    
+	    // Check we've got the right member
 	    JFactory::getApplication()->enqueueMessage('Send member subs with member id'.$memid);
+	    
+	    // Email member
+	    // Set up mail
+	    // Get mailer object
+	    $mailer = JFactory::getMailer();
+	    
+	    // Set Sender
+	    $config = JFactory::getConfig();
+	    $sender = array(
+	        $config->get( 'mailfrom' ),
+	        $config->get( 'fromname' )
+	    );
+	    
+	    $mailer->setSender($sender);
+	    
+	    // Set recipient
+	    $recipient = 'geoffm@labyrinth.net.au';
+	    $mailer->addRecipient($recipient);
+	    
+	    // Create message body
+	    $body = "this is the mail message";
+	    
+	    $mailer->setSubject(JText::_('COM_SUBS_EMAIL_SUBJECT'));
+	    $mailer->setBody($body);
+	    
+	    // Send the message
+	    $send = $mailer->Send();
+	    if ( $send !== true ) {
+	        echo 'Error sending email: ';
+	    } else {
+	        echo 'Mail sent';
+	    }
+	    
+	    // Set the return path
 	    $returnurl = 'index.php?option=com_subs&view=subs';
 	    
 	    $this->setRedirect($returnurl);
