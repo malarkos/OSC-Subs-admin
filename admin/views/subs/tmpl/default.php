@@ -62,6 +62,9 @@ $listDirn = $this->escape ( $this->filter_order_Dir );
 				
 				</th>
 				<th width="5%">
+				<?php echo JText::_('COM_SUBS_VIEW_PDF') ;?>
+				</th>
+				<th width="5%">
 				<?php echo JText::_('COM_SUBS_SEND_EMAIL') ;?>
 				</th>
 				<th width="5%">
@@ -93,6 +96,7 @@ foreach ( $this->items as $i => $row ) :
 					$link = JRoute::_ ( 'index.php?option=com_members&task=member.edit&id=' . $row->id );
 					$subslink = JRoute::_ ( 'index.php?option=com_members&view=membersubsnotice&memid=' . $row->MemberID . '&tmpl=component' );
 					$updatesubslink = JRoute::_ ( 'index.php?option=com_subs&view=sub&memid=' . $row->MemberID );
+					$pdflink = JURI::base() . 'components/com_subs/subsfiles/'.$row->MemberID.'.pdf';
 					$emailmembersubslink = JRoute::_ ( 'index.php?option=com_subs&task=subs.SendMemberSubviaEmail&memid=' . $row->MemberID .'&memberemail='.$row->MemberEmail.'&memberfirstname='.$row->MemberFirstname.'&membersurname='.$row->MemberSurname);
 					// $subslink = JRoute::_('index.php?option=com_members&view=membersubsnotice&memid=' . $row->MemberID.'&tmpl=component&print=1&page=');
 					?>
@@ -159,6 +163,9 @@ foreach ( $this->items as $i => $row ) :
 							<?php endforeach; ?>
 							
 							</table>
+						</td>
+						<td>
+							<a href="<?php echo $pdflink; ?>" target="_blank">View PDF</a>
 						</td>
 						<td>
 							<a href="<?php echo $emailmembersubslink; ?>">Email subs</a>
