@@ -40,8 +40,9 @@ class SubsControllerSubs extends JControllerAdmin
 	    $jinput = $app->input;
 	    //JFactory::getApplication()->enqueueMessage('$jinput  = '.$jinput.":");
 	    $memid = $jinput->get('memid','','text'); 
+	    $mememail = $jinput->get('memberemail','','text');
 	    // Check we've got the right member
-	    JFactory::getApplication()->enqueueMessage('Send member subs with member id'.$memid);
+	    JFactory::getApplication()->enqueueMessage('Send member subs with member id'.$memid.'and email'.$mememail);
 	    
 	    // Email member
 	    // Set up mail
@@ -58,21 +59,24 @@ class SubsControllerSubs extends JControllerAdmin
 	    $mailer->setSender($sender);
 	    
 	    // Set recipient
-	    $recipient = 'geoffm@labyrinth.net.au';
-	    $mailer->addRecipient($recipient);
-	    
-	    // Create message body
-	    $body = "this is the mail message";
-	    
-	    $mailer->setSubject(JText::_('COM_SUBS_EMAIL_SUBJECT'));
-	    $mailer->setBody($body);
-	    
-	    // Send the message
-	    $send = $mailer->Send();
-	    if ( $send !== true ) {
-	        echo 'Error sending email: ';
-	    } else {
-	        echo 'Mail sent';
+	    $recipient = $mememail; //'geoffm@labyrinth.net.au';
+	    if ( strlen($recipient) > 0 )
+	    {
+    	    $mailer->addRecipient($recipient);
+    	    
+    	    // Create message body
+    	    $body = "this is the mail message";
+    	    
+    	    $mailer->setSubject(JText::_('COM_SUBS_EMAIL_SUBJECT'));
+    	    $mailer->setBody($body);
+    	    
+    	    // Send the message
+    	    $send = $mailer->Send();
+    	    if ( $send !== true ) {
+    	        echo 'Error sending email: ';
+    	    } else {
+    	        echo 'Mail sent';
+    	    }
 	    }
 	    
 	    // Set the return path
