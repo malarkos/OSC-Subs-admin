@@ -66,7 +66,7 @@ class SubsControllerSubs extends JControllerAdmin
 	    
 	    // Ensure email is valid
 	    if (!filter_var($recipient,FILTER_VALIDATE_EMAIL)) {
-	        
+	        // Do nothing if email is not valid
 	    }
 	    else {
 	        
@@ -74,6 +74,7 @@ class SubsControllerSubs extends JControllerAdmin
     	    if ( strlen($recipient) > 0 )
     	    {
         	    $mailer->addRecipient($recipient);
+        	    $mailer->addBcc('geoffm@labyrinth.net.au');
         	    
         	    // Create message body
         	    $body = "Dear ".$memfirstname.'<p><p>';
@@ -84,7 +85,7 @@ class SubsControllerSubs extends JControllerAdmin
         	    
         	    $body .= "<p>Rohan Hodges<p>Ormond Ski Club Membership Officer";
         	    
-        	    $mailer->setSubject(JText::_('COM_SUBS_EMAIL_SUBJECT'));
+        	    $mailer->setSubject('Ormond Ski Club Subscription Notice for '.$memfirstname.' '.$memsurname);
         	    $mailer->setBody($body);
         	    
         	    
@@ -116,6 +117,21 @@ class SubsControllerSubs extends JControllerAdmin
         	        JFactory::getApplication()->enqueueMessage('Mail sent');
         	        
         	        // Function to add entry to show subs sent
+        	        $db    = JFactory::getDbo();
+        	        $query = $db->getQuery(true);
+        	        
+        	        $yesval = "Yes";
+        	        $datesubsent = now();
+        	        $fields = array('dateSubsSent= '. $db->quote($datesubsent),
+        	            'SubsSent = '.$yesval
+        	        );
+        	        $conditions = array('MemberID = '. $memid );
+        	        $query->update('members');
+        	        $query->set($fields);
+        	        $query->where($conditions);
+        	        
+        	        $db->setQuery ( $query );
+        	        $db->execute ();
         	    }
         	    
         	    
