@@ -121,14 +121,14 @@ class SubsControllerSubs extends JControllerAdmin
         	        $query = $db->getQuery(true);
         	        
         	        $yesval = "Yes";
-        	        $datesubsent = now();
-        	        $fields = array('dateSubsSent= '. $db->quote($datesubsent),
-        	            'SubsSent = '.$yesval
-        	        );
+        	        $datesubsent = date('Y-m-d H:i:s');
+        	        $fields = array('dateSubsSent = '. $db->quote($datesubsent),'SubsSent = \'Yes\'' );
+        	        JFactory::getApplication()->enqueueMessage($fields);
         	        $conditions = array('MemberID = '. $memid );
         	        $query->update('members');
         	        $query->set($fields);
         	        $query->where($conditions);
+        	        JFactory::getApplication()->enqueueMessage($query);
         	        
         	        $db->setQuery ( $query );
         	        $db->execute ();

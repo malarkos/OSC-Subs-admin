@@ -171,8 +171,8 @@ foreach ( $this->items as $i => $row ) :
 							<a href="<?php echo $emailmembersubslink; ?>">Email subs</a>
 						</td>
 						<td>
-							Subs emailed on
-						</td>
+							<?php echo $row->dateSubsSent; ?>
+							</td>
 				<td>
 					<a href="<?php echo $subslink; ?>"> Subs Notice </a></td>
 				</td>
