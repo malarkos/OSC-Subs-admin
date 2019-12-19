@@ -43,7 +43,9 @@ $listDirn = $this->escape ( $this->filter_order_Dir );
 				<?php echo JHtml::_('grid.sort', 'COM_SUBS_MEMBERTYPE', 'MemberType', $listDirn, $listOrder); ?>
 				</th>
 				
-				
+				<th width="5%">
+				<?php echo JText::_('COM_SUBS_EMAIL') ;?>
+				</th>
 				<th width="5%">
 				<?php echo JText::_('COM_SUBS_MEMBER_DOB_LABEL') ;?>
 				</th>
@@ -123,7 +125,9 @@ foreach ( $this->items as $i => $row ) :
 				<td>
 								<?php echo $row->MemberType; ?>
 						</td>
-				
+				<td>
+								<?php echo $row->MemberEmail; ?>
+						</td>
 				
 						<td>
 								<?php echo $row->MemberBirthDate; ?>

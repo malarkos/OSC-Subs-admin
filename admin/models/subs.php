@@ -42,9 +42,8 @@ class SubsModelSubs extends JModelList
         $query->from('members');
         $query->where('MemberType in (\'Graduate\',\'Student\',\'Life\',\'Hon Life\')');
         //$query->where('MemberID = \'351\'');
-        //$query->orderby('dateSubsSent');
-        
         $query->where('MemberLeaveofAbsence = \'No\'');
+        $query->order('dateSubsSent');
                 
                 // Filter: like / search
 		/*$search = $this->getState('filter.search');
