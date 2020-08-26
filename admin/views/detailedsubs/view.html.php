@@ -15,7 +15,7 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @since  0.0.1
  */
-class SubsViewFinances extends JViewLegacy
+class SubsViewDetailedSubs extends JViewLegacy
 {
 	/**
 	 * Display the Finances view
@@ -28,16 +28,16 @@ class SubsViewFinances extends JViewLegacy
 	{
 		// Get application
 		$app = JFactory::getApplication();
-		$context = "finances.list.admin.finances";
+		//$context = "finances.list.admin.finances";
 		
 		// Get data from the model
-		$this->items		= $this->get('Items');
+		$this->items		= $this->get('DetailedSubs');
 		$this->pagination	= $this->get('Pagination');
 		$this->state			= $this->get('State');
-		$this->filter_order 	= $app->getUserStateFromRequest($context.'filter_order', 'filter_order', 'LockerNumber', 'cmd');
-		$this->filter_order_Dir = $app->getUserStateFromRequest($context.'filter_order_Dir', 'filter_order_Dir', 'asc', 'cmd');
-		$this->filterForm    	= $this->get('FilterForm');
-		$this->activeFilters 	= $this->get('ActiveFilters');
+		//$this->filter_order 	= $app->getUserStateFromRequest($context.'filter_order', 'filter_order', 'LockerNumber', 'cmd');
+		//$this->filter_order_Dir = $app->getUserStateFromRequest($context.'filter_order_Dir', 'filter_order_Dir', 'asc', 'cmd');
+		//$this->filterForm    	= $this->get('FilterForm');
+		//$this->activeFilters 	= $this->get('ActiveFilters');
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
@@ -49,19 +49,19 @@ class SubsViewFinances extends JViewLegacy
  
 		require_once JPATH_COMPONENT . '/helpers/subs.php';
 		
-		SubsHelper::addSubmenu("finances");
+		SubsHelper::addSubmenu("detailedsubs");
 		
 		
 		$this->sidebar = JHtmlSidebar::render();
 		
  		// Set the toolbar
-		$this->addToolBar();
+		//$this->addToolBar();
                 
 		// Display the template
 		parent::display($tpl);
 				
 		// Set the document
-		$this->setDocument();
+		//$this->setDocument();
 	}
         
         	/**

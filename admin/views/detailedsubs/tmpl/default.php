@@ -11,58 +11,43 @@
 defined ( '_JEXEC' ) or die ( 'Restricted Access' );
 JHtml::_ ( 'formbehavior.chosen', 'select' );
 
-$listOrder = $this->escape ( $this->filter_order );
-$listDirn = $this->escape ( $this->filter_order_Dir );
+
 $total=0;
 ?>
 <div id="j-sidebar-container" class="span2">
     <?php echo $this->sidebar; ?>
 </div>
 <div id="j-main-container" class="span10">
-<form action="index.php?option=com_subs&view=finances" method="post"
+<form action="index.php?option=com_subs&view=detailedsubs" method="post"
 	id="adminForm" name="adminForm">
-	<div class="row-fluid">
-		<div class="span6">
-			<?php echo JText::_('COM_FINANCES_FILTER'); ?>
-			<?php
-				echo JLayoutHelper::render ( 'joomla.searchtools.default', array ('view' => $this ));
-			?>
-		</div>
-	</div>
+	
 	<table class="table table-striped table-hover">
 		<thead>
 			<tr>
-				<th width="1%"><?php echo JText::_('COM_SUBS_NUM'); ?></th>
-				<th width="2%">
-				<?php echo JHtml::_('grid.checkall'); ?>
-			
+				
+						
 			
 				
-				<th width="20%">
-				<?php echo JText::_('COM_FINANCES_MEMBER') ;?>
+				<th width="40%">
+				<?php echo JText::_('COM_SUBS_MEMBERNAME') ;?>
 				</th>
-				<th width="10%">
-				<?php echo JHtml::_('grid.sort', 'COM_FINANCES_TRANSACTIONDATE', 'f.TransactionDate', $listDirn, $listOrder); ?>
+				
+				<th width="20%">
+				<?php echo JText::_('COM_SUBS_MEMBERTYPE') ;?>
 			</th>
-				<th width="5%">
-				<?php echo JText::_('COM_FINANCES_CREDITDEBIT') ;?>
-			</th>
-				<th width="10%">
+			<th width="20%">
 				<?php echo JText::_('COM_FINANCES_AMOUNT') ;?>
 			</th>
-				
 				<th width="20%">
-				<?php echo JText::_('COM_FINANCES_DESCRIPTION') ;?>
-				</th>
-				<th width="20%">
-				<?php echo JText::_('COM_FINANCES_COMMENT') ;?>
-				</th>
+				<?php echo JText::_('COM_SUBS_MEMBERPAIDSUBS') ;?>
+			</th>
+		
 
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="8">
+				<td colspan="3">
 					<?php echo $this->pagination->getListFooter(); ?>
 				</td>
 			</tr>
@@ -73,15 +58,12 @@ $total=0;
 				<?php
 				
 foreach ( $this->items as $i => $row ) :
-					$link = JRoute::_ ( 'index.php?option=com_subs&task=financeentry.edit&FinanceID=' . $row->FinanceID  );
+					//$link = JRoute::_ ( 'index.php?option=com_subs&task=financeentry.edit&FinanceID=' . $row->FinanceID  );
 					//$link = JRoute::_ ( 'index.php?option=com_finances&task=financeentry.edit&FinanceID=' . $row->id . '&memid=' . $row->MemberID );
 					?>
  
 					<tr>
-				<td><?php echo $this->pagination->getRowOffset($i); ?></td>
-				<td>
-							<?php echo JHtml::_('grid.id', $i, $row->FinanceID); ?>
-						</td>
+				
 				<td>
 						
 								<?php echo $row->membername; ?>
@@ -89,29 +71,18 @@ foreach ( $this->items as $i => $row ) :
 						</td>
 				<td>
 							
-                          <?php echo $row->TransactionDate; ?>
+                          <?php echo $row->MemberType; ?>
                                                         
 						</td>
+						<Td> <?php echo $row->Amount; ?></Td>
 				<td>
 						
-								<?php echo $row->CreditDebit; ?>
+								<?php echo $row->CurrentSubsPaid; ?>
 							
 						</td>
 
 
-				<td>
-					<a href="<?php echo $link; ?>">
-                               $<?php echo $row->Amount; $total += $row->Amount;?>
-                           </a>
-						</td>
 				
-				<td>
-                                                        <?php echo $row->Description; ?>
-						</td>
-				<td>
-                                                        <?php echo $row->Comment; ?>
-						</td>
-
 
 			</tr>
 				<?php endforeach; ?>

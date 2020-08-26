@@ -39,6 +39,11 @@ class SubsHelper extends JHelperContent
             'index.php?option=com_subs&view=finances',
             $vName == 'finances'
             );
+        JHtmlSidebar::addEntry(
+            JText::_('COM_SUBS_DETAILEDSUBS'),
+            'index.php?option=com_subs&view=detailedsubs',
+            $vName == 'detailedsubs'
+            );
         /*JHtmlSidebar::addEntry(
             JText::_('COM_SUBS_SUBSREFERENCEDATES'),
             'index.php?option=com_subs&view=subsreferencedates',
