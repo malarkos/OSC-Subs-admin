@@ -170,6 +170,7 @@ class SubsModelDetailedSubs extends JModelList
 	            $detailedsubs[$n]->MemberType = $familysubs[$j]->FamilyMembershipType;
 	            $detailedsubs[$n]->CurrentSubsPaid = $familysubs[$j]->CurrentSubsPaid;
 	            $detailedsubs[$n]->Amount =  $familysubsrate; 
+	            $n++;
 	        }
 	        
 	        // Add Lockers
