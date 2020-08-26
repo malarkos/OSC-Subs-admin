@@ -166,7 +166,7 @@ class SubsModelDetailedSubs extends JModelList
 	        {
 	            $familysubsrate = SubsHelper::returnSubrate($subsyear,$familysubs[$j]->FamilyMembershipType);
 	            //$app->enqueueMessage('Family Member = '. $familysubs[$j]->familymembername. ':');
-	            $detailedsubs[$n]->membername = $familysubs[$j]->familymembername;
+	            $detailedsubs[$n]->membername = "---".$familysubs[$j]->familymembername;
 	            $detailedsubs[$n]->MemberType = $familysubs[$j]->FamilyMembershipType;
 	            $detailedsubs[$n]->CurrentSubsPaid = $familysubs[$j]->CurrentSubsPaid;
 	            $detailedsubs[$n]->Amount =  $familysubsrate; 
@@ -187,7 +187,7 @@ class SubsModelDetailedSubs extends JModelList
 	        for ($k=0;$k<$num_rowslockers;$k++)
 	        {
 	            $lockerrate = SubsHelper::returnSubrate($subsyear,"Locker");
-	            $detailedsubs[$n]->membername = "Locker #" . $lockerinfo[$k]->LockerNumber;
+	            $detailedsubs[$n]->membername = "---Locker #" . $lockerinfo[$k]->LockerNumber;
 	            $detailedsubs[$n]->MemberType = "Locker";
 	            $detailedsubs[$n]->CurrentSubsPaid = $lockerinfo[$k]->CurrentSubsPaid;
 	            $detailedsubs[$n]->Amount =  $lockerrate; 
@@ -199,7 +199,8 @@ class SubsModelDetailedSubs extends JModelList
 	        $query->select ( 'Description,Amount' );
 	        $query->from ( 'finances' );
 	        $query->where ( 'MemberID = ' . $memid );
-	        $query->where ('TransactionDate > \'2019-11-30\'');
+	        $query->where ('TransactionDate > \'2019-11-30\''); //TODO update this to get start of current subs year
+	        $query->where ('CreditDebit = \'C\'');
 	        $financeinfo = array();
 	        $db->setQuery ( $query );
 	        $db->execute ();
@@ -207,7 +208,7 @@ class SubsModelDetailedSubs extends JModelList
 	        $financeinfo = $db->loadObjectList ();
 	        for ($l=0;$l<$num_rowsfinance;$l++)
 	        {
-	            $detailedsubs[$n]->membername = "Locker #" . $financeinfo[$l]->Description;
+	            $detailedsubs[$n]->membername =  "---".$financeinfo[$l]->Description;
 	            $detailedsubs[$n]->MemberType = "Payment";
 	            $detailedsubs[$n]->CurrentSubsPaid = "N/A";
 	            $detailedsubs[$n]->Amount =  $financeinfo[$l]->Amount; 
