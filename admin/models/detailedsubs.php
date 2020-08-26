@@ -165,7 +165,7 @@ class SubsModelDetailedSubs extends JModelList
 	        for ($j=0;$j < $num_rowsfam;$j++)
 	        {
 	            $familysubsrate = SubsHelper::returnSubrate($subsyear,$familysubs[$j]->FamilyMembershipType);
-	            $app->enqueueMessage('Family Member = '. $familysubs[$j]->familymembername. ':');
+	            //$app->enqueueMessage('Family Member = '. $familysubs[$j]->familymembername. ':');
 	            $detailedsubs[$n]->membername = $familysubs[$j]->familymembername;
 	            $detailedsubs[$n]->MemberType = $familysubs[$j]->FamilyMembershipType;
 	            $detailedsubs[$n]->CurrentSubsPaid = $familysubs[$j]->CurrentSubsPaid;
@@ -174,6 +174,25 @@ class SubsModelDetailedSubs extends JModelList
 	        }
 	        
 	        // Add Lockers
+	        
+	        $query = $db->getQuery ( true );
+	        $query->select ( 'LockerNumber,CurrentSubsPaid' );
+	        $query->from ( 'lockers' );
+	        $query->where ( 'MemberID = ' . $memid );
+	        $lockerinfo = array();
+	        $db->setQuery ( $query );
+	        $db->execute ();
+	        $num_rowslockers = $db->getNumRows ();
+	        $lockerinfo = $db->loadObjectList ();
+	        for ($k=0;$k<$num_rowslockers;$k++)
+	        {
+	            $lockerrate = SubsHelper::returnSubrate($subsyear,"Locker");
+	            $detailedsubs[$n]->membername = "Locker" . $lockerinfo[$k]->LockerNumber;
+	            $detailedsubs[$n]->MemberType = "Locker";
+	            $detailedsubs[$n]->CurrentSubsPaid = $lockerinfo[$k]->CurrentSubsPaid;
+	            $detailedsubs[$n]->Amount =  $lockerrate; 
+	            $n++;
+	        }
 	        
 	    }
 	    
