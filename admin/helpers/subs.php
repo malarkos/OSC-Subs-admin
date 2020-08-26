@@ -48,6 +48,7 @@ class SubsHelper extends JHelperContent
     
     public function returnSubsYear()
     {
+        // TODO create page to set this value
         $db = JFactory::getDbo ();
         $query = $db->getQuery ( true );
         $query->select ( 'subsyear' );
