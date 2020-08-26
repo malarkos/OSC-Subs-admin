@@ -187,7 +187,7 @@ class SubsModelDetailedSubs extends JModelList
 	        for ($k=0;$k<$num_rowslockers;$k++)
 	        {
 	            $lockerrate = SubsHelper::returnSubrate($subsyear,"Locker");
-	            $detailedsubs[$n]->membername = "Locker" . $lockerinfo[$k]->LockerNumber;
+	            $detailedsubs[$n]->membername = "Locker #" . $lockerinfo[$k]->LockerNumber;
 	            $detailedsubs[$n]->MemberType = "Locker";
 	            $detailedsubs[$n]->CurrentSubsPaid = $lockerinfo[$k]->CurrentSubsPaid;
 	            $detailedsubs[$n]->Amount =  $lockerrate; 
