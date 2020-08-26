@@ -78,6 +78,9 @@ class SubsHelper extends JHelperContent
         return ($subsstartdate);
     }
     
+    
+    
+    
     public function returnSubrate($year,$memtype)
     {
         $app = JFactory::getApplication ();

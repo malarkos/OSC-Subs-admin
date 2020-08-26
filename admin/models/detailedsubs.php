@@ -106,6 +106,10 @@ class SubsModelDetailedSubs extends JModelList
 	     *  
 	     */
 	    
+	    // Get subsyear from helper file
+	    require_once JPATH_COMPONENT . '/helpers/subs.php';
+	    $subsyear = SubsHelper::returnSubsYear();
+	    
 	    $db    = JFactory::getDbo();
 	    $query = $db->getQuery(true);
 	    $app = JFactory::getApplication ();
@@ -123,6 +127,7 @@ class SubsModelDetailedSubs extends JModelList
 	    $num_rows = $db->getNumRows ();
 	    $memberids = $db->loadObjectList ();
 	  
+	    $n=0;
 	    for($i = 0; $i < $num_rows; $i ++) {
 	        $memid = $memberids [$i]->MemberID;
 	        //$app->enqueueMessage('Memid = '. $memid . ':');
@@ -133,10 +138,41 @@ class SubsModelDetailedSubs extends JModelList
 	        $db->setQuery($query);
 	        //$app->enqueueMessage('Query = '. $query . ':');
 	        $row = $db->loadRow();
-	        $detailedsubs[$i]->membername = $row['0'];
-	        $detailedsubs[$i]->MemberType = $row['1'];
-	        $detailedsubs[$i]->CurrentSubsPaid = $row['2'];
-	        $detailedsubs[$i]->Amount = "$100.00";
+	        $detailedsubs[$n]->membername = $row['0'];
+	        $detailedsubs[$n]->MemberType = $row['1'];
+	        $detailedsubs[$n]->CurrentSubsPaid = $row['2'];
+	        $subsrate = "0.00";
+	        if ($row[1] == "Graduate" || $row[1] == "Student") 
+	        {
+	            $subsrate = SubsHelper::returnSubrate($subsyear,$row['1']);
+	        }
+	       
+	        $detailedsubs[$n]->Amount =  $subsrate; 
+	        
+	        $n++;
+	        // Add family members
+	        $familysubs = array();
+	        $query = $db->getQuery ( true );
+	        
+	        $query->select ( 'CONCAT(FamilyMemberFirstname," ",FamilyMemberSurname) as familymembername,FamilyMembershipType,CurrentSubsPaid' );
+	        $query->from ( 'familymembers' );
+	        $query->where ( 'MemberID = ' . $memid . ' AND FamilyMembershipType in (\'Spouse\',\'Child\') ' );
+	        
+	        $db->setQuery ( $query );
+	        $db->execute ();
+	        $num_rowsfam = $db->getNumRows ();
+	        $familysubs = $db->loadObjectList ();
+	        for ($j=0;$j < $num_rowsfam;$j++)
+	        {
+	            $familysubsrate = SubsHelper::returnSubrate($subsyear,$familysubs[$j]->FamilyMembershipType);
+	            $app->enqueueMessage('Family Member = '. $familysubs[$j]->familymembername. ':');
+	            $detailedsubs[$n]->membername = $familysubs[$j]->familymembername;
+	            $detailedsubs[$n]->MemberType = $familysubs[$j]->FamilyMembershipType;
+	            $detailedsubs[$n]->CurrentSubsPaid = $familysubs[$j]->CurrentSubsPaid;
+	            $detailedsubs[$n]->Amount =  $familysubsrate; 
+	        }
+	        
+	        // Add Lockers
 	        
 	    }
 	    
@@ -160,4 +196,4 @@ class SubsModelDetailedSubs extends JModelList
 		// return array
 		
 	}
-}
+} 
