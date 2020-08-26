@@ -27,12 +27,8 @@ JHtml::_ ( 'formbehavior.chosen', 'select' );
 	<table class="table table-striped table-hover">
 		<thead>
 			<tr>
-				<th width="5%">
-					<?php echo JText::_('COM_SUBS_SUBSSUMMARYID'); ?>
-				</th>
-				<th width="2%">
-				<?php echo JHtml::_('grid.checkall'); ?>
-				</th>
+				
+				
 				<th width="10%">
 				<?php echo JText::_('COM_SUBS_SUBSSUMMARY_YEAR') ;?>
 				</th>
@@ -67,12 +63,8 @@ JHtml::_ ( 'formbehavior.chosen', 'select' );
 				
 				?>
 				<tr>
-				<td align="center">
-							<?php echo $row->id; ?>
-				</td>
-				<td>
-							<?php echo JHtml::_('grid.id', $i, $row->id); ?>
-				</td>
+				
+			
 				<td>
 							<?php echo $row->subsyear; ?>
 				</td>

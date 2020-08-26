@@ -40,6 +40,7 @@ class SubsModelSubsSummary extends JModelList
 		// Create the base select statement.
 		$query->select('*');
         $query->from('oscsubsreferencedates');
+        $query->order('subsyear');
         
 		return $query;
 	}
