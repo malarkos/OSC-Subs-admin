@@ -194,6 +194,26 @@ class SubsModelDetailedSubs extends JModelList
 	            $n++;
 	        }
 	        
+	        // show payments
+	        $query = $db->getQuery ( true );
+	        $query->select ( 'Description,Amount' );
+	        $query->from ( 'finances' );
+	        $query->where ( 'MemberID = ' . $memid );
+	        $query->where ('TransactionDate > \'2019-11-30\'');
+	        $financeinfo = array();
+	        $db->setQuery ( $query );
+	        $db->execute ();
+	        $num_rowsfinance = $db->getNumRows ();
+	        $financeinfo = $db->loadObjectList ();
+	        for ($l=0;$l<$num_rowsfinance;$l++)
+	        {
+	            $detailedsubs[$n]->membername = "Locker #" . $financeinfo[$l]->Description;
+	            $detailedsubs[$n]->MemberType = "Payment";
+	            $detailedsubs[$n]->CurrentSubsPaid = "N/A";
+	            $detailedsubs[$n]->Amount =  $financeinfo[$l]->Amount; 
+	            $n++;
+	        }
+	        
 	    }
 	    
 	    return $detailedsubs;
