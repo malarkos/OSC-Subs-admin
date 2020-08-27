@@ -215,6 +215,20 @@ class SubsModelDetailedSubs extends JModelList
 	            $n++;
 	        }
 	        
+	        // get total balance for member
+	        $query = $db->getQuery ( true );
+	        $query->select ( 'Sum(Amount) as amount' );
+	        $query->from ( 'finances' );
+	        $query->where ( 'MemberID = ' . $memid );
+	        $db->setQuery($query);
+	        //$app->enqueueMessage('Query = '. $query . ':');
+	        $row = $db->loadRow();
+	        
+	        $detailedsubs[$n]->membername =  "--- Current Account balance";
+	        $detailedsubs[$n]->MemberType = "Balance";
+	        $detailedsubs[$n]->CurrentSubsPaid = "N/A";
+	        $detailedsubs[$n]->Amount =  $row['0'];
+	        $n++;
 	    }
 	    
 	    return $detailedsubs;
