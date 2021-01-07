@@ -71,13 +71,40 @@ foreach ( $this->items as $i => $row ) :
 						</td>
 				<td>
 							
-                          <?php echo $row->MemberType; ?>
+                          <?php 
+                          
+                                    echo $row->MemberType; 
+                          
+                          ?>
                                                         
 						</td>
-						<Td> <?php echo $row->Amount; ?></Td>
+						<Td> <?php if ($row->MemberType == "Balance" && $row->Amount > 0)
+						{
+						    echo "<font color=\"green\">";
+						    echo $row->Amount;
+						    echo "</font>";
+						}
+						else
+						{
+						    echo $row->Amount; 
+						}
+						          
+						          
+						     ?></Td>
 				<td>
 						
-								<?php echo $row->CurrentSubsPaid; ?>
+								<?php  if($row->CurrentSubsPaid == "No")
+    								{
+    								    echo "<font color=\"red\">";
+    								    echo $row->CurrentSubsPaid;
+    								    echo "</font>";
+    								}
+    								else 
+    								{
+								
+								        echo $row->CurrentSubsPaid; 
+								    }
+								?>
 							
 						</td>
 

@@ -196,7 +196,7 @@ class SubsModelDetailedSubs extends JModelList
 	        
 	        // show payments
 	        $query = $db->getQuery ( true );
-	        $query->select ( 'Description,Amount' );
+	        $query->select ( 'TransactionDate,Description,Amount' );
 	        $query->from ( 'finances' );
 	        $query->where ( 'MemberID = ' . $memid );
 	        $query->where ('TransactionDate > \'2019-11-30\''); //TODO update this to get start of current subs year
@@ -208,7 +208,7 @@ class SubsModelDetailedSubs extends JModelList
 	        $financeinfo = $db->loadObjectList ();
 	        for ($l=0;$l<$num_rowsfinance;$l++)
 	        {
-	            $detailedsubs[$n]->membername =  "---".$financeinfo[$l]->Description;
+	            $detailedsubs[$n]->membername =  "---".$financeinfo[$l]->TransactionDate." ".$financeinfo[$l]->Description;
 	            $detailedsubs[$n]->MemberType = "Payment";
 	            $detailedsubs[$n]->CurrentSubsPaid = "N/A";
 	            $detailedsubs[$n]->Amount =  $financeinfo[$l]->Amount; 
