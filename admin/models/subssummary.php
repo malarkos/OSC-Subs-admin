@@ -137,6 +137,22 @@ class SubsModelSubsSummary extends JModelList
     	                       $amount = 0;  // Life and Hon Life subs = 0
     	                       SubsHelper::setCurrentSubsPaid($memid,"Yes","m");  // Life and Hon Life members are paid by default
     	                   }
+    	                   
+    	                   // TODO - for Summer Usage only - multiple by .2
+    	                   
+    	                   $query = $db->getQuery ( true );
+    	                   $query->select ( 'SummerUsageOnly' );
+    	                   $query->from ( 'members' );
+    	                   $query->where ( 'MemberID = ' . $memid );
+    	                   //$app->enqueueMessage('Summer Usage query= '.$query.';');
+    	                   $db->setQuery ( $query );
+    	                   $db->execute ();
+    	                   $summerusage = $db->loadResult ();
+    	                   
+    	                   if ($summerusage == "Yes"){
+    	                       $amount *= 0.2;
+    	                   }
+    	                       
     	                   $amountnogst = (10*$amount)/11;
     	                   $gst = $amount/11;
     	                   $membertype = "m";
